@@ -1,0 +1,94 @@
+---
+import { getCollection, type CollectionEntry } from 'astro:content';
+import Layout from '../../../layouts/BaseLayout.astro';
+import PostCard from '../../../components/PostCard.astro';
+
+type BlogEntry = CollectionEntry<'blog'>;
+
+const CURRENT_LANG = 'bn';
+
+// Fetch only English posts
+const allBengaliPosts = (await getCollection('blog', ({ data }) => data.lang === CURRENT_LANG))
+  .sort((a, b) => b.data.pubDate.getTime() - a.data.pubDate.getTime());
+
+// Group by subject
+const groupPostsBySubject = (posts: BlogEntry[]) => {
+  const grouped = posts.reduce((acc, post) => {
+    const subject = post.data.subject ?? "Uncategorized";
+    (acc[subject] ??= []).push(post);
+    return acc;
+  }, {} as Record<string, BlogEntry[]>);
+
+  const subjectsArray = Object.entries(grouped);
+
+  subjectsArray.forEach(([_, posts]) =>
+    posts.sort((a, b) => a.data.chapter - b.data.chapter)
+  );
+
+  subjectsArray.sort(([a], [b]) =>
+    a.localeCompare(b, undefined, { numeric: true })
+  );
+
+  return subjectsArray;
+};
+
+const subjectsWithPosts = groupPostsBySubject(allBengaliPosts);
+---
+
+<Layout title="বাংলা পর্বসমূহ | নোভী ও কার্ণেল" description="সমস্ত বাংলা পর্বসমূহ | নোভী ও কার্ণেল সিরিজ" lang={CURRENT_LANG}>
+  <main class="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
+
+    <header class="text-center mb-12">
+      <h1 class="text-3xl font-heading font-extrabold text-accent-primary mb-3">
+        সম্পূর্ণ সংরক্ষণাগার (বাংলা)
+      </h1>
+      <p class="text-xl text-support-muted">
+        নোভী এবং কার্ণেল-এর জগতের সমস্ত অধ্যায় দেখুন। প্রতিটি বিষয়বস্তু একটি নতুন সিরিজ।
+      </p>
+
+      <div class="dark-layer mt-6 flex justify-center space-x-4">
+        <a href="/blog/en/" class="px-4 py-2 text-sm font-semibold bg-support-muted rounded-full hover:bg-support-muted/90">
+          English (EN)
+        </a>
+        <a href="/blog/bn/" class="px-4 py-2 text-sm font-semibold bg-accent-primary rounded-full shadow-md hover:bg-accent-primary/90">
+          বাংলা (BN)
+        </a>
+      </div>
+    </header>
+
+    {allBengaliPosts.length === 0 && (
+      <div class="text-center py-20 bg-neutral-light/50 dark:bg-neutral-dark/50 rounded-lg border-2 border-dashed border-support-muted/50">
+        <p class="text-2xl font-semibold text-support-tertiary">
+          কোন বাংলা পর্ব পাওয়া যায়নি।
+        </p>
+        <p class="text-support-muted mt-2">
+          শীঘ্রই ফিরে দেখুন, অথবা ইংরেজি আর্কাইভ চেষ্টা করুন!
+        </p>
+      </div>
+    )}
+
+    <div class="space-y-16">
+      {subjectsWithPosts.map(([subjectTitle, posts], idx) => (
+        <section class={idx === 0 ? "pt-8" : "border-t pt-8 border-support-muted/30"}>
+          
+          <div class="mb-8 p-4 bg-accent-muted/10 dark:bg-neutral-dark/60 rounded-lg border-l-4 border-accent-primary shadow-md">
+            <h2 class="text-2xl font-heading font-bold mt-0 mb-1">
+              সিরিজ: {subjectTitle}
+            </h2>
+            <p class="text-support-tertiary dark:text-accent-muted text-lg">
+              এই বিষয়বস্তুর জন্য {posts.length} পর্বের সম্পূর্ণ সংরক্ষণাগার।
+            </p>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {posts.map(post => (
+              <PostCard post={post} />
+            ))}
+          </div>
+
+        </section>
+      ))}
+    </div>
+
+  </main>
+</Layout>

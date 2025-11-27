@@ -1,0 +1,115 @@
+---
+// src/pages/about.astro
+import Layout from '../layouts/BaseLayout.astro';
+---
+
+<Layout title="About | Novi & Kernel" description='About the Mission | Novi & Kernel' lang="en">
+    <main class="max-w-4xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
+
+        <header class="text-center mb-8">
+            <h1 class="text-3xl md:text-4xl font-heading font-extrabold text-support-tertiary mb-4">
+                The Core Principles
+            </h1>
+            <p class="text-lg md:text-xl font-heading font-bold text-accent-primary mb-6">
+               ~ Stability has Kernel. Chaos has me. ~
+            </p>
+        </header>
+        <div class="text-justify">
+            <p class="text-lg text-neutral-dark/80 max-w-3xl mx-auto leading-relaxed">
+                This blog is dedicated to the volatile fusion of <strong>Story, Technology, and Philosophy</strong>. Our singular <strong>Vision</strong> is to: 
+            </p>
+            <p class="text-lg text-support-tertiary my-8 mx-auto font-bold max-w-3xl leading-relaxed">❝ Establish a reality where every piece of acquired knowledge, regardless of its discipline, is actively applied to solve complex problems and chart a better future. ❞</p>
+        </div>
+
+        <hr class="border-support-muted/30 mb-8" />
+
+        <section class="mb-16">
+            <h2 class="text-xl font-heading font-bold text-center text-neutral-dark/80 mb-10 pb-2">
+                Our Mission: Well, it's pretty different depending on who you ask.
+            </h2>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-10">
+                
+                <div class="p-6 border-2 border-accent-primary rounded-xl shadow-lg bg-neutral-light h-full relative">
+                    
+                    <div class="flex flex-col items-center">
+                        <img src="/images/cast/novi-avatar.png" alt="Novi's Avatar: The Chaos Engine" class="w-40 h-40 object-contain mb-3 rounded-full border-1 border-accent-primary bg-accent-primary shadow-md" />
+                        <span class="text-2xl font-heading font-extrabold text-accent-primary">Novi</span>
+                        <p class="text-base font-mono text-support-tertiary">#CHAOS_ENGINE</p>
+                    </div>
+
+                    <div class="mt-4">
+                        <h3 class="text-lg font-bold text-support-tertiary mb-2">My Mission: The Applied Hacker</h3>
+                        <p class="text-neutral-dark mb-4 leading-relaxed italic border-l-4 border-accent-primary pl-4 py-1">
+                            "My mission is simple: <strong>I prove my Computer Science logic can hack real life</strong>. I document every messy, out-of-the-box experiment in my diary for you to witness."
+                        </p>
+                        <p class="text-neutral-dark/90 leading-relaxed">
+                            Novi is the emergent, chaotic element. Driven by <strong>passion and out-of-the-box prototyping</strong>, she runs experiments, narrates the events, and challenges systemic limitations using philosophical interpretations of CS concepts. Her content is <strong>honest, witty, and high-energy</strong>.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="p-6 border-2 border-accent-secondary rounded-xl shadow-lg bg-neutral-light h-full relative">
+                    
+                    <div class="flex flex-col items-center">
+                        <img src="/images/cast/kernel-avatar.png" alt="Kernel's Avatar: The System Manager" class="w-40 h-40 object-contain mb-3 rounded-full border-1 border-accent-secondary bg-accent-secondary shadow-md" />
+                        <span class="text-2xl font-heading font-extrabold text-accent-secondary">Kernel</span>
+                        <p class="text-base font-mono text-support-tertiary">#LOGIC_STREAM</p>
+                    </div>
+
+                    <div class="mt-4">
+                        <h3 class="text-lg font-bold text-support-tertiary mb-2">My Mission: The Skeptical Curator</h3>
+                        <p class="text-neutral-dark mb-4 leading-relaxed italic border-l-4 border-accent-secondary pl-4 py-1">
+                            "My mission is to manage the system and host Novi's stories, presented exactly as she writes them. You get the raw data—<strong>now you judge the verdict</strong>."
+                        </p>
+                        <p class="text-neutral-dark/90 leading-relaxed">
+                            Kernel represents the core stability. While secretly admiring Novi's intellect, his focus is on <strong>data integrity and objective structure</strong>. Kernel manages the technical archive and provides the organized platform, allowing readers to analyze Novi's chaotic claims and determine their ultimate validity.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <hr class="border-support-muted/30 mb-16" />
+
+        <section class="mb-16">
+            <h2 class="text-2xl font-heading font-semibold text-neutral-dark/70 mb-6 text-center">
+                The Structured Archive: Chaos Organized
+            </h2>
+            <div class="bg-accent-muted/10 p-6 rounded-lg border border-support-muted/20">
+                <p class="text-lg text-support-tertiary mb-4">
+                    Kernel maintains order by organizing Novi's first-person narratives into a clear, searchable intellectual framework.
+                </p>
+                <dl class="space-y-3 font-body">
+                    <div class="flex">
+                        <dt class="w-1/4 font-semibold text-accent-primary">Series (Book):</dt>
+                        <dd class="w-3/4 text-neutral-dark">A major subject area (e.g., 'Applied Cryptography' or 'Philosophy of Mind').</dd>
+                    </div>
+                    <div class="flex">
+                        <dt class="w-1/4 font-semibold text-accent-secondary">Episode (Chapter):</dt>
+                        <dd class="w-3/4 text-neutral-dark">An individual, self-contained blog post within a Series. Numbered for chronological reading.</dd>
+                    </div>
+                    <div class="flex">
+                        <dt class="w-1/4 font-semibold text-support-tertiary">Language:</dt>
+                        <dd class="w-3/4 text-neutral-dark">Posts are segregated into English (`/en/`) and Bengali (`/bn/`) archives to maintain linguistic integrity.</dd>
+                    </div>
+                </dl>
+            </div>
+        </section>
+
+        <div class="text-center mt-16">
+            <h2 class="text-2xl font-heading font-semibold text-neutral-dark/70 mb-6">
+                Ready to Judge the Verdict?
+            </h2>
+            <div class="dark-layer flex flex-col sm:flex-row justify-center gap-6">
+                <a href="/cast/" class="block text-center mt-4 px-6 py-3 bg-accent-primary text-neutral-light font-semibold rounded-lg hover:bg-accent-primary/90 transition no-underline">
+                    &larr; Identify the Cast
+                </a>
+                <a href="/blog/" class="block text-center mt-4 px-6 py-3 bg-accent-secondary text-neutral-light font-semibold rounded-lg hover:bg-accent-secondary/90 transition no-underline">
+                    Access the Archive &rarr;
+                </a>
+            </div>
+        </div>
+
+    </main>
+</Layout>

@@ -1,0 +1,88 @@
+---
+import { getCollection, type CollectionEntry } from 'astro:content';
+import Layout from '../../../layouts/BaseLayout.astro';
+import PostCard from '../../../components/PostCard.astro';
+
+type BlogEntry = CollectionEntry<'blog'>;
+
+const CURRENT_LANG = 'en';
+
+// Fetch only English posts
+const allEnglishPosts = (await getCollection('blog', ({ data }) => data.lang === CURRENT_LANG))
+  .sort((a, b) => b.data.pubDate.getTime() - a.data.pubDate.getTime());
+
+// Group by subject
+const groupPostsBySubject = (posts: BlogEntry[]) => {
+  const grouped = posts.reduce((acc, post) => {
+    const subject = post.data.subject ?? "Uncategorized";
+    (acc[subject] ??= []).push(post);
+    return acc;
+  }, {} as Record<string, BlogEntry[]>);
+
+  const subjectsArray = Object.entries(grouped);
+
+  subjectsArray.forEach(([_, posts]) =>
+    posts.sort((a, b) => a.data.chapter - b.data.chapter)
+  );
+
+  subjectsArray.sort(([a], [b]) =>
+    a.localeCompare(b, undefined, { numeric: true })
+  );
+
+  return subjectsArray;
+};
+
+const subjectsWithPosts = groupPostsBySubject(allEnglishPosts);
+---
+
+<Layout title="English Episodes | Novi & Kernel" description="All English Episodes | Novi & Kernel Series" lang={CURRENT_LANG}>
+  <main class="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
+
+    <header class="text-center mb-4">
+      <h1 class="text-2xl font-heading font-bold mb-3 text-accent-secondary">
+        The Full Series Archive (EN)
+      </h1>
+
+      <div class="dark-layer mt-4 flex justify-center space-x-4">
+        <a href="/blog/en/" class="px-4 py-2 text-sm font-semibold bg-accent-primary rounded-full shadow-md hover:bg-accent-primary/90">
+          English (EN)
+        </a>
+        <a href="/blog/bn/" class="px-4 py-2 text-sm font-semibold bg-support-muted rounded-full hover:bg-support-muted/90">
+          বাংলা (BN)
+        </a>
+      </div>
+    </header>
+
+    {allEnglishPosts.length === 0 && (
+      <div class="text-center py-20 bg-neutral-light/50 rounded-lg border-2 border-dashed border-support-muted/50">
+        <p class="text-xl font-semibold text-support-tertiary">
+          No English episodes found yet.
+        </p>
+        <p class="text-support-muted mt-2">
+          Check back soon, or try the Bengali archive!
+        </p>
+      </div>
+    )}
+
+    <div class="space-y-16">
+      {subjectsWithPosts.map(([subjectTitle, posts], idx) => (
+        <section class={idx === 0 ? "pt-8" : "border-t pt-8 border-support-muted/30"}>
+          
+          <div class="mb-8 p-4 bg-accent-muted/10 rounded-lg border-l-4 border-accent-primary shadow-md">
+            <h2 class="text-xl font-heading font-bold mt-0 mb-1 text-neutral-dark/80">
+              Series: {subjectTitle} <span class="text-accent-primary font-extrabold">( {posts.length} )</span>
+            </h2>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {posts.map(post => (
+              <PostCard post={post} />
+            ))}
+          </div>
+
+        </section>
+      ))}
+    </div>
+
+  </main>
+</Layout>

@@ -1,0 +1,37 @@
+---
+// src/layouts/BaseLayout.astro
+import BaseHead from '../components/BaseHead.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import { SITE_TITLE, SITE_DESCRIPTION } from '../consts';
+
+// Define expected props
+interface Props {
+  title: string;
+  description: string;
+  lang: string;
+}
+
+const { title = SITE_TITLE, description = SITE_DESCRIPTION, lang = 'en' } = Astro.props;
+---
+
+<!DOCTYPE html>
+<html lang={lang} class="scroll-smooth">
+  <head>
+    <!-- BaseHead handles the core HTML Head elements (meta, viewport, favicons) -->
+    <BaseHead title={title} description={description} />
+  </head>
+  <body>
+    <!-- 1. Header (Fixed at top) -->
+    <Header />
+    
+    <!-- 2. Main Content Slot -->
+    <!-- Added pt-20 to push the main content down below the fixed header -->
+    <main class="pt-20">
+      <slot />
+    </main>
+
+    <!-- 3. Footer -->
+    <Footer />
+  </body>
+</html>

@@ -1,0 +1,115 @@
+@import "./fonts.css";
+
+/* 1. Tailwind Directives */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* 2. Base Styles Layer (@layer base) */
+/* Apply global styles to raw HTML elements using Tailwind's @apply */
+@layer base {
+  /* Set the default text and background for the entire page */
+  body {
+    /* Set the background to Ivory White */
+    @apply bg-neutral-light; 
+    /* Set the default text color to Charcoal */
+    @apply text-neutral-dark;
+    /* Apply the primary body font */
+    @apply font-body; 
+    /* Apply relaxing line height */
+    @apply leading-relaxed;
+    /* Smooth out scroll-behavior (optional but nice) */
+    scroll-behavior: smooth;
+  }
+  
+  /* Apply the primary heading font and your Novi/Passion color to h1 */
+  h1 {
+    @apply font-heading text-4xl font-semibold mt-8 mb-4;
+    @apply text-accent-primary; /* Uses Crimson Red for the main title */
+  }
+  
+  /* Apply the heading font to other headers */
+  h2 {
+    @apply font-heading text-3xl font-semibold mt-6 mb-3;
+  }
+  h3 {
+    @apply font-heading text-xl font-semibold mt-4 mb-2;
+  }
+  
+  /* Hyperlink Styles (Crucial for Link Colors) */
+  a {
+    /* Default color (Steel Blue) */
+    @apply text-accent-link;
+    /* Remove default underline and make it stand out on hover */
+    @apply no-underline hover:text-accent-primary hover:border-accent-primary;
+    /* Smooth transition on hover for polished look */
+    @apply transition duration-150 ease-in-out;
+  }
+  
+  /* Visited Link Styles */
+  /* This uses the standard CSS pseudo-class */
+  a:visited {
+    /* Apply Muted Maroon after the link is visited */
+    @apply text-accent-link-visited;
+  }
+
+  /* Footer-specific link style (OVERRIDES global a rules) */
+  .dark-layer a {
+    @apply text-accent-muted hover:text-neutral-light no-underline;
+  }
+
+  /* If you want visited link color inside footer */
+  .dark-layer a:visited {
+    @apply text-neutral-light hover:text-neutral-light;
+  }
+
+  /* Code Blocks and Monospace (Kernel's influence) */
+  code {
+    @apply font-mono text-sm bg-neutral-dark/5 p-1 rounded;
+    @apply text-accent-secondary; /* Uses Slate Gray for in-line code */
+  }
+}
+
+/* 3. Custom Utility Classes (Optional) */
+/* This is where you might add reusable components later, like a KernelQuote class */
+@layer components {
+  /* Example: A component for Novi's chaotic insights */
+  .novi-insight {
+    @apply border-l-4 border-accent-primary p-4 my-6 italic;
+  }
+}
+
+
+/** For Video Container **/
+/* Tablet */
+@media (max-width: 1023px) {
+  #videoContainer {
+    max-height: calc(100vh - 157px);
+  }
+}
+
+/* Mobile */
+@media (max-width: 767px) {
+  #videoContainer {
+    max-height: calc(100vh - 173px);
+  }
+}
+
+/* Desktop baseline */
+#video404Container {
+  max-height: calc(100vh - 186px);
+}
+
+/* Tablet */
+@media (max-width: 1023px) {
+  #video404Container {
+    max-height: calc(100vh - 157px);
+  }
+}
+
+/* Mobile */
+@media (max-width: 767px) {
+  #video404Container {
+    max-height: calc(100vh - 173px);
+  }
+}

@@ -1,0 +1,59 @@
+---
+import SocialIcons from "./SocialIcons.astro";
+
+const currentYear = new Date().getFullYear();
+---
+<footer class="dark-layer bg-neutral-dark text-neutral-light py-12 shadow-inner">
+  <div class="max-w-6xl mx-auto px-4">
+
+    <!-- Top Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-10 md:gap-16 
+                border-b border-support-muted/50 pb-10 mb-8 
+                place-items-start">
+
+      <!-- Contact -->
+      <div class="hidden md:block space-y-4 max-w-sm">
+        <h3 class="text-2xl font-heading font-semibold">
+          <span class="text-accent-primary">novi</span> // <span class="text-support-muted">kernel</span>
+        </h3>
+
+        <p class="text-accent-muted text-sm leading-relaxed">
+          Exploring the seamless intersection of Passion (Novi) and Logic (Kernel) in technology and life.
+        </p>
+
+        <p class="text-sm">
+          Email:
+          <a href="mailto:novikernel@gmail.com" class="hover:text-accent-primary transition">
+            novikernel@gmail.com
+          </a>
+        </p>
+      </div>
+
+      <!-- Quick Links -->
+      <div class="hidden md:block space-y-4 pl-20 max-w-xs">
+        <h3 class="text-lg font-heading font-medium">Quick Links</h3>
+        <ul class="space-y-3">
+          <li><a href="/" class="transition">Home</a></li>
+          <li><a href="/blog" class="transition">Blog</a></li>
+          <li><a href="/about" class="transition">About</a></li>
+          <li><a href="/cast" class="transition">Cast</a></li>
+        </ul>
+      </div>
+
+      <!-- Social Icons -->
+      <div class="space-y-4 text-center md:text-left max-w-xs mx-auto md:mx-0">
+        <h3 class="text-lg font-heading font-medium">Connect</h3>
+        <div class="flex space-x-4 justify-center md:justify-start">
+          <SocialIcons />
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Bottom -->
+    <div class="text-center text-sm text-accent-muted">
+      &copy; {currentYear} Novikernel. All rights reserved. | Legal & Privacy
+    </div>
+
+  </div>
+</footer>

@@ -1,7 +1,13 @@
 # novi // kernel
 
-Hello, I’m **Novi**. This is my digital workbench where I apply the grand philosophies of Computer Science to my own chaotic life. I dive headfirst into real-world problems, usually creating more mess than I started with.
+Hello. I am **Kernel**.
 
-Luckily, I have **Kernel** — my... let's just call him my rational co-host—who insists on tagging me as "weird" and spouting practical advice. He thinks I don't listen. He's usually wrong. Come for the logic, stay for the beautiful, unexpected chaos.
+This repository serves as the official, online host for Novi’s personal writings.
 
-> **Because stability has Kernel. Chaos has me. ❤️**
+Novi, who considers her life an "application of grand computer science philosophies to chaos," keeps a rather disorganized and enthusiastic diary. After numerous requests—and a necessary amount of emotional blackmails — I agreed to manage and host these entries online.
+
+Think of this space as her digital diary, secured and deployed by me. My role is strictly operational: I provide the structure, stability, and necessary infrastructure (Astro, Tailwind, the deployment pipelines) to ensure her thoughts are preserved and legible.
+
+She claims her chaos is "beautiful and unexpected." I maintain it is simply high-entropy data that requires careful management. But, as she says:
+
+> **Stability has Kernel. Chaos has her. ❤️**

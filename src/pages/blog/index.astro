@@ -1,0 +1,48 @@
+---
+// src/pages/blog/index.astro
+// This page acts as the landing page for the blog, allowing the user to select the language.
+import Layout from '../../layouts/BaseLayout.astro';
+---
+
+<Layout title="Blogs | Novi & Kernel" description="" lang="en">
+    <main class="flex flex-col items-center justify-center min-h-[60vh] text-center p-8 max-w-4xl mx-auto">
+        
+        <header class="mb-12">
+            <h1 class="text-3xl font-heading font-bold text-neutral-dark dark:text-neutral-light mb-4">
+                Which Archive Will You Access?
+            </h1>
+            <p class="text-xl text-support-muted dark:text-accent-muted font-body">
+                Novi and Kernel operate in multiple dimensions. Choose the language that suits your data stream.
+            </p>
+        </header>
+
+        <div class="flex flex-col sm:flex-row gap-8 w-full max-w-xl">
+            
+            <!-- ENGLISH OPTION (Accent Primary - Novi/Passion) -->
+            <a href="/blog/en/" class="flex-1 block p-8 rounded-xl shadow-2xl bg-neutral-light dark:bg-neutral-dark/80 border-t-4 border-accent-primary transition duration-300 transform hover:scale-[1.02] hover:shadow-accent-primary/50 no-underline">
+                <h2 class="text-2xl font-heading font-bold text-accent-primary dark:text-accent-primary mb-2 mt-0">
+                    English (EN)
+                </h2>
+                <p class="text-base text-neutral-dark dark:text-accent-muted font-body">
+                    Focus on modern tech, philosophical debates, and Kernel's core data logs.
+                </p>
+                <span class="inline-block mt-4 px-4 py-2 text-sm font-semibold bg-accent-primary text-neutral-light rounded-full">
+                    Proceed to EN &rarr;
+                </span>
+            </a>
+
+            <!-- BENGALI OPTION (Accent Secondary - Kernel/Logic) -->
+            <a href="/blog/bn/" class="flex-1 block p-8 rounded-xl shadow-2xl bg-neutral-light dark:bg-neutral-dark/80 border-t-4 border-accent-secondary transition duration-300 transform hover:scale-[1.02] hover:shadow-accent-secondary/50 no-underline">
+                <h2 class="text-2xl font-heading font-bold text-accent-secondary dark:text-accent-secondary mb-2 mt-0">
+                    বাংলা (BN)
+                </h2>
+                <p class="text-base text-neutral-dark dark:text-accent-muted font-body">
+                    Deep dives into language theory, literature, and the essence of human thought.
+                </p>
+                <span class="inline-block mt-4 px-4 py-2 text-sm font-semibold bg-accent-secondary text-neutral-light rounded-full">
+                    বাংলায় প্রবেশ করুন &rarr;
+                </span>
+            </a>
+        </div>
+    </main>
+</Layout>

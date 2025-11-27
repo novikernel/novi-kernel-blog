@@ -1,0 +1,62 @@
+---
+import Layout from "../layouts/BaseLayout.astro";
+---
+
+<Layout title="404 | Novi & Kernel" description="404" lang="en">
+
+  <section class="w-full flex flex-col items-center justify-start mt-2 px-4">
+
+    <!-- Heading -->
+    <div class="text-center mb-2 leading-tight">
+      <span class="text-xl font-extrabold text-accent-primary">404!</span>
+      <span class="text-xl font-semibold text-accent-secondary mt-1">
+        The Logical Path Broke!
+      </span>
+      <span class="text-accent-primary font-medium mt-1 text-base">
+        (Meet Bugsyboo)
+      </span>
+    </div>
+
+    <!-- VIDEO BLOCK -->
+    <div 
+      id="video404Container"
+      class="w-full flex justify-center items-center overflow-hidden rounded-xl"
+    >
+      <video 
+        src="/videos/novi-kernel-404.mp4"
+        poster="/images/novi-kernel-404-poster.png"
+        autoplay 
+        loop 
+        muted 
+        playsinline
+        class="max-h-[72vh] w-auto object-contain"
+      >
+        <img 
+          src="/images/novi-kernel-404-poster.png" 
+          alt="404 Animation Fallback" 
+          class="max-h-[72vh] w-auto object-contain"
+        />
+      </video>
+    </div>
+
+
+    <!-- Safe Links -->
+    <div class="mb-2 flex gap-3 dark-layer rounded-lg">
+      <a 
+        href="/"
+        class="px-4 py-2 bg-accent-primary text-white rounded-md text-lg font-medium hover:opacity-90 transition"
+      >
+        Go Home
+      </a>
+
+      <a 
+        href="/blog"
+        class="px-4 py-2 bg-accent-secondary text-white rounded-md text-lg font-medium hover:opacity-90 transition"
+      >
+        Visit Blog
+      </a>
+    </div>
+
+  </section>
+
+</Layout>

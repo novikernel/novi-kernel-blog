@@ -1,0 +1,93 @@
+---
+import MobileMenu from "../components/react/MobileMenu";
+
+const navItems = [
+    { title: "Home", href: "/" },
+    { title: "Blog", href: "/blog" },
+    { title: "About", href: "/about" },
+    { title: "Cast", href: "/cast" },
+];
+
+// 1. Capture the current path, stripping any trailing slash for clean matching.
+const currentPath = Astro.url.pathname.replace(/\/$/, ''); 
+
+// 2. Define the appearance of the active link (used when the header is transparent OR scrolled)
+const activeClasses = "text-accent-primary font-extrabold border-b-2 border-accent-primary";
+---
+<header id="main-header" class="fixed top-0 w-full z-50 transition-all bg-transparent">
+    <div class="container mx-auto h-24 px-4 flex items-center justify-between">
+
+        <a href="/" class="flex items-center h-full hover:opacity-80 lg:ml-16">
+            <img src="/logos/novikernel-hrz-lockup.svg" class="h-20 w-auto object-contain" alt="Logo" />
+        </a>
+
+        <nav class="hidden lg:flex items-center space-x-10 lg:mr-16">
+            {navItems.map((item) => {
+                // Determine if the current item is active:
+                // a) Exact match for non-root paths (e.g., /about === /about)
+                // b) Starts with match for nested paths (e.g., /blog/en/post starts with /blog)
+                // c) Special handling for the root path ('/')
+                const isActive = item.href === currentPath || (item.href === '/' && currentPath === '') || (item.href !== '/' && currentPath.startsWith(item.href));
+
+                return (
+                    <a 
+                        href={item.href} 
+                        class:list={[
+                            "text-lg font-medium transition duration-200 hover:text-accent-primary no-underline",
+                            // Default text color when header is transparent (light text assumed)
+                            "text-neutral-light dark:text-neutral-light",
+                            // Apply active classes conditionally
+                            { [activeClasses]: isActive }
+                        ]}
+                    >
+                        {item.title}
+                    </a>
+                );
+            })}
+        </nav>
+
+        <div class="flex items-center lg:hidden"> 
+            <MobileMenu navItems={navItems} client:load />
+        </div>
+
+    </div>
+</header>
+
+<script>
+    const header = document.getElementById('main-header');
+    // We also need the nav items to apply a different color when scrolled/light
+    const navLinks = header ? header.querySelectorAll('nav a') : []; 
+    const scrollThreshold = 10;
+
+    if (header) {
+        const scrolledClasses = ['bg-neutral-light', 'shadow-md', 'text-neutral-dark', 'dark:bg-neutral-dark', 'dark:text-neutral-light'];
+        const topClasses = ['bg-transparent', 'shadow-none', 'text-neutral-light', 'dark:text-neutral-light'];
+        
+        // Classes to apply to links when scrolled/light background
+        const linkScrolledClasses = ['!text-neutral-dark', 'dark:!text-neutral-light'];
+        
+        const updateHeader = () => {
+            if (window.scrollY > scrollThreshold) {
+                header.classList.add(...scrolledClasses);
+                header.classList.remove(...topClasses);
+                // Apply dark text color to links when header is light/scrolled
+                navLinks.forEach(link => {
+                    // Only change color if it's NOT the active link (which has its own color)
+                    if (!link.classList.contains('text-accent-primary')) {
+                        link.classList.add(...linkScrolledClasses);
+                    }
+                });
+            } else {
+                header.classList.remove(...scrolledClasses);
+                header.classList.add(...topClasses);
+                // Reset link colors to default light text when header is transparent
+                navLinks.forEach(link => {
+                    link.classList.remove(...linkScrolledClasses);
+                });
+            }
+        };
+
+        updateHeader();
+        window.addEventListener('scroll', updateHeader);
+    }
+</script>

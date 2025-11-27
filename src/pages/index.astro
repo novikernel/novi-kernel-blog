@@ -1,0 +1,243 @@
+---
+import { getCollection, type CollectionEntry } from 'astro:content';
+import Layout from '../layouts/BaseLayout.astro';
+import PostCard from '../components/PostCard.astro'; 
+
+// Define the type alias
+type BlogEntry = CollectionEntry<'blog'>;
+
+// --- DATA FETCHING: Get the 3 latest English posts ---
+// 1. Fetch all posts
+const allPosts: BlogEntry[] = await getCollection('blog');
+
+// 2. Filter for English, sort by date descending, and limit to 3
+const featuredPosts = allPosts
+    .filter(post => post.data.lang === 'en')
+    .sort((a, b) => b.data.pubDate.getTime() - a.data.pubDate.getTime())
+    .slice(0, 3);
+
+
+const videoPath = '/videos/novi-kernel-hero-intro.mp4';
+const posterImagePath = '/images/novi-kernel-hero-intro-poster.png';
+---
+
+<Layout title="Home | Novi & Kernel" description="A short, SEO-friendly summary of the home page content." lang='en'>
+    
+    <section class="max-w-6xl mx-auto pt-4 pb-4 px-4 sm:px-6 lg:px-8 bg-neutral-light dark:bg-neutral-dark border-b border-support-muted/30">
+
+        <div class="flex justify-center items-center space-x-3 my-4 dark-layer">
+
+            <button
+                id="peekButton"
+                class="px-5 py-2 text-md md:text-lg font-medium text-white bg-accent-primary rounded-full 
+                    hover:bg-accent-primary/90 transition duration-300 no-underline"
+                aria-label="Peek into Novi and Kernel's private conversation video"
+            >
+                <span class="font-heading font-bold hidden md:inline">Novi:</span>
+                Sneak Peek? 👇<span class="text-lg md:text-xl hidden sm:inline">😉</span>
+            </button>
+
+            <a
+                href="/blog/"
+                class="px-5 py-2 text-md md:text-lg font-medium text-white bg-accent-secondary rounded-full 
+                    hover:bg-accent-secondary/90 transition duration-300 no-underline"
+            >
+                <span class="font-heading font-bold hidden md:inline">Kernel:</span>
+                Start Reading 📖
+            </a>
+
+        </div>
+
+        <div
+            id="videoContainer"
+            class="flex justify-center items-center w-full overflow-hidden rounded-xl group"
+            style="max-height: calc(100vh - 186px);"
+        >
+            <video
+                id="heroVideo"
+                src={videoPath}
+                poster={posterImagePath}
+                muted
+                playsinline
+                preload="auto"
+                class="h-full w-auto object-contain transition duration-500"
+            >
+                <img
+                    src={posterImagePath}
+                    alt="Novi Kernel Hero Introduction Placeholder Image"
+                    class="h-full w-auto object-contain"
+                />
+            </video>
+            
+            <button 
+                id="replayButton" 
+                class="absolute inset-0 flex items-center justify-center 
+                       bg-black/50 opacity-0 pointer-events-none transition duration-300"
+                aria-label="Replay Video"
+            >
+                <svg class="w-20 h-20 text-white" fill="currentColor" viewBox="0 0 20 20">
+                    <path d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z"></path>
+                </svg>
+            </button>
+        </div>
+
+    </section>
+
+    <script>
+        // Note: This script runs client-side (in the browser).
+        const video = document.getElementById('heroVideo');
+        const peekButton = document.getElementById('peekButton');
+        const replayButton = document.getElementById('replayButton');
+        const videoContainer = document.getElementById('videoContainer');
+
+        if (
+            video instanceof HTMLVideoElement &&
+            peekButton instanceof HTMLButtonElement &&
+            replayButton instanceof HTMLButtonElement &&
+            videoContainer instanceof HTMLElement
+        ) {
+            
+            // Set initial video properties
+            video.style.cursor = 'pointer';
+
+            // Function to reset and start video
+            const startVideo = () => {
+                video.currentTime = 0;
+                video.play();
+                
+                // Hide replay button and remove container styling
+                replayButton.style.opacity = '0';
+                replayButton.style.pointerEvents = 'none';
+                videoContainer.classList.remove('rounded-xl', 'overflow-hidden', 'group');
+            };
+
+            // 1. Handle video start via Novi's 'Peek' button
+            peekButton.onclick = startVideo;
+
+            // 2. Handle video end (Show replay button)
+            video.onended = () => {
+                video.pause();
+                replayButton.style.opacity = '1'; 
+                replayButton.style.pointerEvents = 'auto';
+                // Add the styling back when video ends
+                videoContainer.classList.add('rounded-xl', 'overflow-hidden', 'group');
+            };
+
+            // 3. Handle replay on button click
+            replayButton.onclick = startVideo;
+
+            // 4. Handle manual play/pause via user interaction on the video itself
+            video.addEventListener('click', () => {
+                if (video.paused) {
+                    // Play: Start video logic
+                    startVideo(); 
+                } else {
+                    // Pause: Show replay overlay
+                    video.pause();
+                    
+                    // Only show the replay overlay if the video didn't end naturally
+                    if (!video.ended) {
+                        replayButton.style.opacity = '1';
+                        replayButton.style.pointerEvents = 'auto';
+                        videoContainer.classList.add('rounded-xl', 'overflow-hidden', 'group');
+                    }
+                }
+            });
+            
+            // Initial state: If video is paused/stopped, show container styling
+            video.addEventListener('pause', () => {
+                if (!video.ended) {
+                    videoContainer.classList.add('rounded-xl', 'overflow-hidden', 'group');
+                }
+            });
+            
+            // On play, ensure styling is removed
+            video.addEventListener('play', () => {
+                videoContainer.classList.remove('rounded-xl', 'overflow-hidden', 'group');
+            });
+        }
+    </script>
+
+
+    <section class="max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
+        <h2 class="text-4xl font-extrabold text-center text-neutral-dark dark:text-neutral-light mb-12 border-b-2 border-accent-primary pb-2 inline-block mx-auto">
+            Latest Diary Entries
+        </h2>
+        
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
+            {featuredPosts.map((post) => (
+                <PostCard post={post} />
+            ))}
+        </div>
+        
+        <div class="text-center mt-16">
+            <a href="/blog/" class="text-xl font-medium border-b border-accent-link hover:text-accent-link/80 transition no-underline">
+                View All Series and Chapters &rarr;
+            </a>
+        </div>
+    </section>
+
+    <section class="bg-neutral-light/50 dark:bg-neutral-dark/80 max-w-7xl mx-auto my-16 p-8 rounded-xl shadow-inner border border-support-muted/20">
+    
+        <h2 class="text-3xl font-extrabold text-center text-neutral-dark dark:text-neutral-light mb-12 font-heading">
+            🤯 Novi and Kernel Can't Agree. Where Should You Go First?
+        </h2>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+
+            <div class="mt-16 dark-layer relative p-6 pt-24 rounded-2xl border-4 border-accent-primary bg-neutral-light shadow-lg hover:shadow-2xl transition duration-500 transform hover:-translate-y-1">
+
+                <div class="absolute -top-16 left-1/2 -translate-x-1/2 z-10 w-32 h-32 md:w-36 md:h-36 rounded-full bg-accent-primary shadow-md flex items-center justify-center">
+                    <img 
+                        src="/images/novi-avatar-1.png"
+                        alt="Novi's comic sketch avatar" 
+                        class="w-full h-full object-contain drop-shadow-lg"
+                    />
+                </div>
+
+                <div class="text-center mb-4">
+                    <h3 class="text-xl font-extrabold text-accent-primary font-heading">
+                        Novi's Directive: Check the Roster! 🎭
+                    </h3>
+                    <p class="text-neutral-dark/80 font-body mt-2">
+                        "Don't waste time. Check out our <strong>Universe</strong>. Identify the key
+                        collaborators and even <strong>antagonists</strong>. Jump straight to the <strong>Cast</strong>
+                        page. Shall we?"
+                    </p>
+                </div>
+                    
+                <a href="/cast/" class="block text-center mt-6 px-6 py-3 bg-accent-primary text-neutral-light font-semibold rounded-lg hover:bg-accent-primary/90 transition no-underline">
+                    ← Identify the Cast
+                </a>
+            </div>
+
+            <div class="mt-16 dark-layer relative p-6 pt-24 rounded-2xl border-4 border-accent-secondary bg-neutral-light shadow-lg hover:shadow-2xl transition duration-500 transform hover:-translate-y-1">
+
+                <div class="absolute -top-16 left-1/2 -translate-x-1/2 z-10 w-32 h-32 md:w-36 md:h-36 rounded-full bg-accent-secondary shadow-md flex items-center justify-center">
+                    <img 
+                        src="/images/kernel-avatar-1.png"
+                        alt="Kernel's comic sketch avatar" 
+                        class="w-full h-full object-contain drop-shadow-lg"
+                    />
+                </div>
+
+                <div class="text-center mb-4">
+                    <h3 class="text-xl font-extrabold text-accent-secondary font-heading">
+                        Kernel's Counter-Argument: Know the Source. 🧠
+                    </h3>
+                    <p class="text-neutral-dark/80 font-body mt-2">
+                        "The larger cast is <strong>overwhelming</strong>. Understand the <strong>core principles</strong>
+                        first. Go to the <strong>About</strong> page to learn the source of the mission.
+                        Then decide."
+                    </p>
+                </div>
+                    
+                <a href="/about/" class="block text-center mt-6 px-6 py-3 bg-accent-secondary text-neutral-light font-semibold rounded-lg hover:bg-accent-secondary/90 transition no-underline">
+                    Understand the Mission →
+                </a>
+            </div>
+
+        </div>
+    </section>
+
+</Layout>

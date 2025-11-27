@@ -1,0 +1,36 @@
+---
+import { getCollection } from 'astro:content';
+import Layout from '../../../layouts/BaseLayout.astro';
+
+// Dynamic route param
+const { slug } = Astro.params;
+
+// Get all English posts
+const posts = await getCollection('blog', p => p.data.lang === 'bn');
+
+// Find the specific post by slug
+const post = posts.find(p => p.slug === slug);
+
+if (!post) {
+  throw new Error(`Post not found: ${slug}`);
+}
+
+// Load the MDX/Markdown content renderer
+const { Content } = await post.render();
+
+export async function getStaticPaths() {
+  const posts = await getCollection('blog', p => p.data.lang === 'bn');
+
+  return posts.map(post => ({
+    params: { slug: post.slug }
+  }));
+}
+---
+
+<Layout title={post.data.title} description={post.data.description} lang='bn'>
+  <article class="prose dark:prose-invert max-w-3xl mx-auto py-12">
+    <h1>{post.data.title}</h1>
+    <p class="text-support-muted">{post.data.pubDate.toDateString()}</p>
+    <Content />
+  </article>
+</Layout>

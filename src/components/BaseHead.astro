@@ -1,0 +1,24 @@
+---
+// src/components/BaseHead.astro
+import { SITE_TITLE, SITE_DESCRIPTION } from '../consts';
+
+interface Props {
+	title?: string;
+	description?: string;
+}
+
+const { title = SITE_TITLE, description = SITE_DESCRIPTION } = Astro.props;
+---
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+<title>{title}</title>
+<meta name="description" content={description} />
+
+<!-- Favicons & Manifest (files are in public/favicon/) -->
+<link rel="icon" type="image/svg+xml" href="/favicon/favicon.ico" />
+<link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-touch-icon.png">
+<link rel="manifest" href="/favicon/site.webmanifest">
+
+<!-- Link to your global CSS (where @font-face rules and Tailwind directives live) -->
+<link rel="stylesheet" href="/src/styles/global.css" />

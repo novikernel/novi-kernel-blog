@@ -1,0 +1,73 @@
+---
+import type { CollectionEntry } from 'astro:content';
+
+interface Props {
+  post: CollectionEntry<'blog'>;
+}
+
+const { post } = Astro.props;
+
+const { title, subject, chapter, description, pubDate, lang } = post.data;
+
+// Construct URL safely from folder structure
+const postUrl = `/blog/${lang}/${post.slug}/`;
+
+// Pre-format chapter number
+const chapterLabel = String(chapter).padStart(2, '0');
+
+// Format date for UI
+const formattedDate = new Date(pubDate).toLocaleDateString(
+  lang === 'en' ? 'en-US' : 'bn-BD',
+  { year: 'numeric', month: 'short', day: 'numeric' }
+);
+
+const chapterColor = 'text-accent-primary';
+const subjectColor = 'text-accent-secondary';
+---
+
+<article class="relative flex flex-col h-full bg-neutral-light border border-accent-primary/40 rounded-xl shadow-lg hover:shadow-2xl transition duration-300 overflow-hidden transform hover:-translate-y-1">
+
+    <!-- Left Accent Strip -->
+    <div class="absolute left-0 top-0 h-full w-2 bg-accent-primary rounded-l-xl"></div>
+
+    <a 
+      href={postUrl} 
+      rel="bookmark"
+      aria-label={`Read ${subject}, Episode ${chapter}: ${title}`}
+      class="p-6 pl-8 block hover:no-underline flex-grow"
+    >
+        
+        <div class="mb-3 flex items-center justify-between">
+            <p class="text-sm font-semibold tracking-wide uppercase text-accent-secondary">
+                {subject}
+            </p>
+            <div class="flex items-center space-x-2">
+                <span class="text-xs font-bold px-2 py-0.5 rounded-full bg-support-tertiary text-neutral-light">
+                    {lang.toUpperCase()}
+                </span>
+                <span class={chapterColor + " text-xl font-extrabold font-heading"}>
+                    {chapterLabel}
+                </span>
+            </div>
+        </div>
+
+        <h3 class="text-xl font-heading font-bold mb-3 leading-snug text-accent-primary/95">
+            {title}
+        </h3>
+        
+        <p class="text-base text-neutral-dark/95 mb-4 flex-grow">
+            {description}
+        </p>
+    </a>
+
+    <footer class="p-6 pt-0 mt-auto flex justify-between items-center border-t border-support-muted/20 pl-8">
+        <div class="text-sm font-body text-accent-secondary">
+            <span class="font-bold mr-1">CH {chapterLabel}:</span>
+            <span class={subjectColor + " font-medium"}>{subject}</span>
+        </div>
+        <time datetime={pubDate.toISOString()} class="text-xs text-accent-secondary font-bold">
+            {formattedDate}
+        </time>
+    </footer>
+
+</article>
