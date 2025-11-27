@@ -1,7 +1,7 @@
 // src/pages/rss/[lang].xml.js
 
 import rss from '@astrojs/rss';
-import { getLatestPosts } from '../../lib/posts';
+import { getCollection } from 'astro:content';
 
 export async function getStaticPaths() {
     return [
@@ -13,8 +13,13 @@ export async function getStaticPaths() {
 export async function GET(context) {
     const { lang } = context.params;
 
-    // Get posts filtered by language
-    const posts = getLatestPosts({ limit: 100, lang });
+    // 1. Fetch ALL posts from the 'blog' collection
+    const allPosts = await getCollection('blog');
+
+    // 2. Filter posts by the current language parameter and sort them
+    const posts = allPosts
+        .filter((post) => post.data.lang === lang)
+        .sort((a, b) => b.data.pubDate.getTime() - a.data.pubDate.getTime()); // Sort by newest first
 
     // Base site URL
     const siteUrl = "https://novikernel.com";
