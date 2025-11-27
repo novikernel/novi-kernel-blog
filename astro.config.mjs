@@ -1,5 +1,3 @@
-// @ts-check
-
 import mdx from '@astrojs/mdx';
 import sitemap from '@astrojs/sitemap';
 import { defineConfig } from 'astro/config';
@@ -11,4 +9,9 @@ import react from '@astrojs/react';
 export default defineConfig({
   site: 'https://novikernel.com',
   integrations: [mdx(), sitemap(), tailwind({}), react()],
+  vite: {
+        build: {
+            outBase: '',
+        },
+  },
 });
