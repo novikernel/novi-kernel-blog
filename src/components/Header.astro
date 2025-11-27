@@ -1,6 +1,4 @@
 ---
-import MobileMenu from "../components/react/MobileMenu";
-
 const navItems = [
     { title: "Home", href: "/" },
     { title: "Blog", href: "/blog" },
@@ -8,12 +6,16 @@ const navItems = [
     { title: "Cast", href: "/cast" },
 ];
 
-// 1. Capture the current path, stripping any trailing slash for clean matching.
-const currentPath = Astro.url.pathname.replace(/\/$/, ''); 
+// 1. Capture the current path
+const currentPath = Astro.url.pathname.replace(/\/$/, '');
 
-// 2. Define the appearance of the active link (used when the header is transparent OR scrolled)
+// 2. Define active link appearance
 const activeClasses = "text-accent-primary font-extrabold border-b-2 border-accent-primary";
+
+// 3. Define Burger Line Classes (moved from React)
+const baseLineClasses = "block h-[3px] w-7 bg-neutral-dark transition-all duration-300 ease-in-out";
 ---
+
 <header id="main-header" class="fixed top-0 w-full z-50 transition-all bg-transparent">
     <div class="container mx-auto h-24 px-4 flex items-center justify-between">
 
@@ -47,7 +49,32 @@ const activeClasses = "text-accent-primary font-extrabold border-b-2 border-acce
         </nav>
 
         <div class="flex items-center lg:hidden"> 
-            <MobileMenu navItems={navItems} client:load />
+            {/* Hamburger Button */}
+            <button id="mobile-menu-btn" aria-label="Toggle navigation" class="flex flex-col gap-1.5 z-[60] relative group">
+                {/* Line 1 (Top) */}
+                <span id="line-top" class={baseLineClasses}></span>
+                {/* Line 2 (Middle) */}
+                <span id="line-middle" class={baseLineClasses}></span>
+                {/* Line 3 (Bottom) */}
+                <span id="line-bottom" class={baseLineClasses}></span>
+            </button>
+
+            {/* Dark Overlay */}
+            <div id="mobile-overlay" class="fixed inset-0 bg-black/40 z-40 hidden transition-opacity duration-300 opacity-0"></div>
+
+            {/* Slide-out Panel */}
+            <nav id="mobile-panel" class="fixed top-0 right-0 h-full w-64 bg-white shadow-xl z-50 transition-transform duration-300 translate-x-full">
+                <div class="p-6 space-y-6 mt-16">
+                    {navItems.map((item) => (
+                        <a 
+                            href={item.href} 
+                            class="mobile-link block text-lg font-medium text-neutral-dark hover:text-accent-primary"
+                        >
+                            {item.title}
+                        </a>
+                    ))}
+                </div>
+            </nav>
         </div>
 
     </div>
@@ -90,4 +117,65 @@ const activeClasses = "text-accent-primary font-extrabold border-b-2 border-acce
         updateHeader();
         window.addEventListener('scroll', updateHeader);
     }
+
+    // --- New Mobile Menu Logic (TS Casted) ---
+    // The '!' at the end casts these as "not null"
+    const btn = document.getElementById('mobile-menu-btn')!;
+    const overlay = document.getElementById('mobile-overlay')!;
+    const panel = document.getElementById('mobile-panel')!;
+    
+    // We use 'as NodeListOf<HTMLElement>' for querySelectorAll if needed, 
+    // but standard iteration usually works fine.
+    const mobileLinks = document.querySelectorAll('.mobile-link');
+
+    // Individual Lines
+    const lineTop = document.getElementById('line-top')!;
+    const lineMiddle = document.getElementById('line-middle')!;
+    const lineBottom = document.getElementById('line-bottom')!;
+
+    // Transformation Classes
+    const openTopClasses = ['translate-y-[8px]', 'rotate-45', '!bg-[#111]'];
+    const openMiddleClasses = ['opacity-0'];
+    const openBottomClasses = ['translate-y-[-8px]', 'rotate-[-45deg]', '!bg-[#111]'];
+
+    function toggleMenu() {
+        // Now typescript knows 'panel' is definitely an element
+        const isClosed = panel.classList.contains('translate-x-full');
+
+        if (isClosed) {
+            // Open Menu
+            panel.classList.remove('translate-x-full');
+            panel.classList.add('translate-x-0');
+            
+            overlay.classList.remove('hidden');
+            setTimeout(() => {
+                overlay.classList.remove('opacity-0');
+            }, 10);
+
+            lineTop.classList.add(...openTopClasses);
+            lineMiddle.classList.add(...openMiddleClasses);
+            lineBottom.classList.add(...openBottomClasses);
+        } else {
+            // Close Menu
+            panel.classList.remove('translate-x-0');
+            panel.classList.add('translate-x-full');
+
+            overlay.classList.add('opacity-0');
+            setTimeout(() => {
+                overlay.classList.add('hidden');
+            }, 300); 
+
+            lineTop.classList.remove(...openTopClasses);
+            lineMiddle.classList.remove(...openMiddleClasses);
+            lineBottom.classList.remove(...openBottomClasses);
+        }
+    }
+
+    // Event Listeners
+    if (btn) btn.addEventListener('click', toggleMenu);
+    if (overlay) overlay.addEventListener('click', toggleMenu);
+    
+    mobileLinks.forEach(link => {
+        link.addEventListener('click', toggleMenu);
+    });
 </script>
