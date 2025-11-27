@@ -5,11 +5,24 @@ import Layout from '../../../layouts/BaseLayout.astro';
 // Dynamic route param
 const { slug } = Astro.params;
 
-// Get all English posts
-const allEnglishPosts = await getCollection('blog', p => p.data.lang === 'en');
+const clenedslug = slug.replace(/^en\//, '');
+const CURRENT_LANG = 'en';
+console.log("Debug: ", clenedslug, slug);
+
+// 1. Fetch only English posts
+const rawPosts = await getCollection('blog', ({ data }) => data.lang === CURRENT_LANG);
+
+// 2. Sort AND Clean the slugs immediately
+// This ensures that when PostCard reads 'post.slug', it sees "my-post" instead of "en/my-post"
+const allEnglishPosts = rawPosts
+  .sort((a, b) => b.data.pubDate.getTime() - a.data.pubDate.getTime())
+  .map((post) => ({
+      ...post,
+      slug: post.slug.replace(/^en\//, '') // 💥 THE FIX: Strip the "en/" prefix
+  }));
 
 // Find the specific post by slug
-const post = allEnglishPosts.find(p => p.slug === slug);
+const post = allEnglishPosts.find(p => p.slug === clenedslug);
 
 if (!post) {
   throw new Error(`Post not found: ${slug}`);
@@ -20,7 +33,7 @@ const subjectPosts = allEnglishPosts.filter(p => p.data.subject === post.data.su
 const sortedPosts = subjectPosts.sort((a, b) => a.data.chapter - b.data.chapter);
 
 // Determine the previous and next chapter (post) within the same subject
-const postIndex = sortedPosts.findIndex(p => p.slug === slug);
+const postIndex = sortedPosts.findIndex(p => p.slug === clenedslug);
 const nextPostIndex = postIndex + 1;
 const nextPost = sortedPosts[nextPostIndex] || null;
 const prevPostIndex = postIndex - 1;
@@ -32,9 +45,15 @@ const { Content } = await post.render();
 
 export async function getStaticPaths() {
   const posts = await getCollection('blog', p => p.data.lang === 'en');
-  return posts.map(post => ({
-    params: { slug: post.slug }
-  }));
+  
+  return posts.map(post => {
+    // 💥 FIX 2: Remove the "en/" prefix from the slug for the URL
+    // If slug is "en/my-post", this makes it "my-post"
+    const cleanSlug = post.slug.replace(/^en\//, '');
+    return {
+      params: { slug: cleanSlug }
+    };
+  });
 }
 ---
 
@@ -73,7 +92,8 @@ export async function getStaticPaths() {
     <div class="w-1/3 flex justify-end">
       {nextPost ? (
         <a href={`/blog/en/${nextPost.slug}`} class="group flex items-center font-medium text-accent-secondary hover:text-accent-primary transition-colors">
-          <span>Chapter {nextPost.data.chapter}</span>
+          <span class="hidden sm:inline">Next: Ch {nextPost.data.chapter}</span>
+          <span class="sm:hidden">Next</span>
           <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-1 transform group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
           </svg>

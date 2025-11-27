@@ -5,32 +5,177 @@ import Layout from '../../../layouts/BaseLayout.astro';
 // Dynamic route param
 const { slug } = Astro.params;
 
-// Get all English posts
-const posts = await getCollection('blog', p => p.data.lang === 'bn');
+const clenedslug = slug.replace(/^bn\//, '');
+const CURRENT_LANG = 'bn';
+console.log("Debug: ", clenedslug, slug);
+
+// 1. Fetch only English posts
+const rawPosts = await getCollection('blog', ({ data }) => data.lang === CURRENT_LANG);
+
+// 2. Sort AND Clean the slugs immediately
+// This ensures that when PostCard reads 'post.slug', it sees "my-post" instead of "bn/my-post"
+const allEnglishPosts = rawPosts
+  .sort((a, b) => b.data.pubDate.getTime() - a.data.pubDate.getTime())
+  .map((post) => ({
+      ...post,
+      slug: post.slug.replace(/^bn\//, '') // 💥 THE FIX: Strip the "bn/" prefix
+  }));
 
 // Find the specific post by slug
-const post = posts.find(p => p.slug === slug);
+const post = allEnglishPosts.find(p => p.slug === clenedslug);
 
 if (!post) {
   throw new Error(`Post not found: ${slug}`);
 }
+
+// Filter posts by the same subject and sort by chapter
+const subjectPosts = allEnglishPosts.filter(p => p.data.subject === post.data.subject);
+const sortedPosts = subjectPosts.sort((a, b) => a.data.chapter - b.data.chapter);
+
+// Determine the previous and next chapter (post) within the same subject
+const postIndex = sortedPosts.findIndex(p => p.slug === clenedslug);
+const nextPostIndex = postIndex + 1;
+const nextPost = sortedPosts[nextPostIndex] || null;
+const prevPostIndex = postIndex - 1;
+const prevPost = sortedPosts[prevPostIndex] || null;
+
 
 // Load the MDX/Markdown content renderer
 const { Content } = await post.render();
 
 export async function getStaticPaths() {
   const posts = await getCollection('blog', p => p.data.lang === 'bn');
-
-  return posts.map(post => ({
-    params: { slug: post.slug }
-  }));
+  
+  return posts.map(post => {
+    // 💥 FIX 2: Remove the "bn/" prefix from the slug for the URL
+    // If slug is "bn/my-post", this makes it "my-post"
+    const cleanSlug = post.slug.replace(/^bn\//, '');
+    return {
+      params: { slug: cleanSlug }
+    };
+  });
 }
 ---
 
 <Layout title={post.data.title} description={post.data.description} lang='bn'>
-  <article class="prose dark:prose-invert max-w-3xl mx-auto py-12">
-    <h1>{post.data.title}</h1>
-    <p class="text-support-muted">{post.data.pubDate.toDateString()}</p>
+  
+  <nav class="max-w-3xl mx-auto py-6 px-4 sm:px-0 flex justify-between items-center text-sm text-support-muted border-b border-support-muted/20 mb-8">
+    
+    <div class="w-1/3 flex justify-start">
+      {prevPost ? (
+        <a href={`/blog/bn/${prevPost.slug}`} class="group flex items-center font-medium text-accent-secondary hover:text-accent-primary transition-colors">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1 transform group-hover:-translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+          </svg>
+          <span class="hidden sm:inline">Prev: Ch {prevPost.data.chapter}</span>
+          <span class="sm:hidden">Prev</span>
+        </a>
+      ) : (
+        <span class="flex items-center text-xs uppercase tracking-wider opacity-50 cursor-default">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
+          </svg>
+          Start
+        </span>
+      )}
+    </div>
+
+    <div class="w-1/3 flex justify-center">
+      <a href="/blog/bn" class="flex items-center font-bold text-accent-secondary hover:underline underline-offset-4 decoration-2">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
+        </svg>
+        Archive
+      </a>
+    </div>
+
+    <div class="w-1/3 flex justify-end">
+      {nextPost ? (
+        <a href={`/blog/bn/${nextPost.slug}`} class="group flex items-center font-medium text-accent-secondary hover:text-accent-primary transition-colors">
+          <span class="hidden sm:inline">Next: Ch {nextPost.data.chapter}</span>
+          <span class="sm:hidden">Next</span>
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-1 transform group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+          </svg>
+        </a>
+      ) : (
+        <span class="text-xs uppercase tracking-wider opacity-50 cursor-default">
+          Latest
+        </span>
+      )}
+    </div>
+  </nav>
+
+
+  <article class="prose prose-slate max-w-3xl mx-auto py-4 px-4 sm:px-0">
+    <div class="mb-8 border-b border-support-muted pb-4">
+      <span class="text-accent-secondary font-mono text-xs uppercase tracking-wider font-bold">Chapter {post.data.chapter}</span>
+      <h1 class="text-2xl font-bold mt-2 mb-2 text-accent-primary">{post.data.title}</h1>
+      <p class="text-support-muted text-sm">{post.data.pubDate.toDateString()}</p>
+    </div>
+    
     <Content />
   </article>
+
+
+  <nav class="max-w-3xl mx-auto py-12 px-4 sm:px-0 mt-8 border-t border-support-muted">
+    <div class="flex justify-between items-center gap-4">
+      
+      <div class="w-1/3 flex justify-start">
+        {prevPost ? (
+          <a
+            href={`/blog/bn/${prevPost.slug}`}
+            class="flex items-center text-sm font-medium text-accent-secondary hover:text-neutral-dark bg-neutral-light border border-support-muted hover:border-accent-secondary transition-all duration-200 p-3 rounded-lg"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+            </svg>
+            <span class="font-bold">Chapter {prevPost.data.chapter}</span>
+          </a>
+        ) : (
+           <div class="flex items-center p-3 opacity-60 cursor-default select-none">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-accent-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
+              </svg>
+              <span class="text-sm font-medium text-support-muted">You're at the Start</span>
+           </div>
+        )}
+      </div>
+
+      <div class="w-1/3 flex justify-center">
+        <a
+          href="/blog/bn"
+          class="flex flex-col items-center justify-center text-sm font-medium text-support-muted hover:text-accent-primary transition-colors duration-200"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mb-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
+          </svg>
+          <span>Archive</span>
+        </a>
+      </div>
+
+      <div class="w-1/3 flex justify-end dark-layer">
+        {nextPost ? (
+          <a
+            href={`/blog/bn/${nextPost.slug}`}
+            class="flex items-center text-sm font-bold text-neutral-light bg-accent-primary hover:bg-accent-primary/90 transition-all duration-200 p-3 px-4 rounded-lg shadow-sm hover:shadow-md"
+          >
+            <span class="mr-2">Chapter {nextPost.data.chapter}</span>
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 transform group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+            </svg>
+          </a>
+        ) : (
+          <div class="flex items-center p-3 opacity-60 cursor-default select-none text-right">
+             <span class="text-sm font-medium text-support-muted mr-2">You're all caught up</span>
+             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+             </svg>
+          </div>
+        )}
+      </div>
+
+    </div>
+  </nav>
+
 </Layout>

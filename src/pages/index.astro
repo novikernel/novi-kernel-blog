@@ -1,4 +1,4 @@
-png---
+---
 import { getCollection, type CollectionEntry } from 'astro:content';
 import Layout from '../layouts/BaseLayout.astro';
 import PostCard from '../components/PostCard.astro'; 
@@ -6,22 +6,28 @@ import PostCard from '../components/PostCard.astro';
 // Define the type alias
 type BlogEntry = CollectionEntry<'blog'>;
 
-// --- DATA FETCHING: Get the 3 latest English posts ---
-// 1. Fetch all posts
-const allPosts: BlogEntry[] = await getCollection('blog');
+const CURRENT_LANG = 'en';
 
-// 2. Filter for English, sort by date descending, and limit to 3
-const featuredPosts = allPosts
-    .filter(post => post.data.lang === 'en')
-    .sort((a, b) => b.data.pubDate.getTime() - a.data.pubDate.getTime())
-    .slice(0, 3);
+// --- DATA FETCHING: Get the 3 latest English posts ---
+// 1. Fetch only English posts
+const rawPosts = await getCollection('blog', ({ data }) => data.lang === CURRENT_LANG);
+
+// 2. Sort AND Clean the slugs immediately
+// This ensures that when PostCard reads 'post.slug', it sees "my-post" instead of "en/my-post"
+const featuredPosts: BlogEntry[] = rawPosts
+  .sort((a, b) => b.data.pubDate.getTime() - a.data.pubDate.getTime())
+  .slice(0, 3)
+  .map((post) => ({
+      ...post,
+      slug: post.slug.replace(/^en\//, '') // 💥 THE FIX: Strip the "en/" prefix
+  }));
 
 
 const videoPath = '/videos/novi-kernel-hero-intro.mp4';
 const posterImagePath = '/images/novi-kernel-hero-intro-poster.png';
 ---
 
-<Layout title="Home | Novi & Kernel" description="A short, SEO-friendly summary of the home page content." lang='en'>
+<Layout title="Home | Novi & Kernel" description="A short, SEO-friendly summary of the home page content." lang={CURRENT_LANG}>
     
     <section class="max-w-6xl mx-auto pt-4 pb-4 px-4 sm:px-6 lg:px-8 bg-neutral-light dark:bg-neutral-dark border-b border-support-muted/30">
 
@@ -226,8 +232,9 @@ const posterImagePath = '/images/novi-kernel-hero-intro-poster.png';
                         Kernel's Counter-Argument: Know the Source. 🧠
                     </h3>
                     <p class="text-neutral-dark/80 font-body mt-2">
-                        "The larger cast is <strong>overwhelming</strong>. Understand the <strong>core principles</strong>
-                        first. Go to the <strong>About</strong> page to learn the source of the mission.
+                        "The larger cast is <strong>overwhelming</strong>.
+                        Understand the <strong>core principles</strong>
+                        first. Go to the <strong>About</strong> page to learn the source of the mission.<br/>
                         Then decide."
                     </p>
                 </div>

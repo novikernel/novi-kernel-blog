@@ -58,7 +58,7 @@
     @apply text-accent-muted hover:text-neutral-light no-underline;
   }
 
-  /* If you want visited link color inside footer */
+  /* Visited link color inside footer */
   .dark-layer a:visited {
     @apply text-neutral-light hover:text-neutral-light;
   }
@@ -69,16 +69,6 @@
     @apply text-accent-secondary; /* Uses Slate Gray for in-line code */
   }
 }
-
-/* 3. Custom Utility Classes (Optional) */
-/* This is where you might add reusable components later, like a KernelQuote class */
-@layer components {
-  /* Example: A component for Novi's chaotic insights */
-  .novi-insight {
-    @apply border-l-4 border-accent-primary p-4 my-6 italic;
-  }
-}
-
 
 /** For Video Container **/
 /* Tablet */

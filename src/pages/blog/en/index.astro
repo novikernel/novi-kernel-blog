@@ -7,9 +7,17 @@ type BlogEntry = CollectionEntry<'blog'>;
 
 const CURRENT_LANG = 'en';
 
-// Fetch only English posts
-const allEnglishPosts = (await getCollection('blog', ({ data }) => data.lang === CURRENT_LANG))
-  .sort((a, b) => b.data.pubDate.getTime() - a.data.pubDate.getTime());
+// 1. Fetch only English posts
+const rawPosts = await getCollection('blog', ({ data }) => data.lang === CURRENT_LANG);
+
+// 2. Sort AND Clean the slugs immediately
+// This ensures that when PostCard reads 'post.slug', it sees "my-post" instead of "en/my-post"
+const allEnglishPosts = rawPosts
+  .sort((a, b) => b.data.pubDate.getTime() - a.data.pubDate.getTime())
+  .map((post) => ({
+      ...post,
+      slug: post.slug.replace(/^en\//, '') // 💥 THE FIX: Strip the "en/" prefix
+  }));
 
 // Group by subject
 const groupPostsBySubject = (posts: BlogEntry[]) => {

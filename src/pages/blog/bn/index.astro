@@ -7,9 +7,17 @@ type BlogEntry = CollectionEntry<'blog'>;
 
 const CURRENT_LANG = 'bn';
 
-// Fetch only English posts
-const allBengaliPosts = (await getCollection('blog', ({ data }) => data.lang === CURRENT_LANG))
-  .sort((a, b) => b.data.pubDate.getTime() - a.data.pubDate.getTime());
+// 1. Fetch only English posts
+const rawPosts = await getCollection('blog', ({ data }) => data.lang === CURRENT_LANG);
+
+// 2. Sort AND Clean the slugs immediately
+// This ensures that when PostCard reads 'post.slug', it sees "my-post" instead of "bn/my-post"
+const allEnglishPosts = rawPosts
+  .sort((a, b) => b.data.pubDate.getTime() - a.data.pubDate.getTime())
+  .map((post) => ({
+      ...post,
+      slug: post.slug.replace(/^bn\//, '') // 💥 THE FIX: Strip the "bn/" prefix
+  }));
 
 // Group by subject
 const groupPostsBySubject = (posts: BlogEntry[]) => {
@@ -32,33 +40,30 @@ const groupPostsBySubject = (posts: BlogEntry[]) => {
   return subjectsArray;
 };
 
-const subjectsWithPosts = groupPostsBySubject(allBengaliPosts);
+const subjectsWithPosts = groupPostsBySubject(allEnglishPosts);
 ---
 
 <Layout title="বাংলা পর্বসমূহ | নোভী ও কার্ণেল" description="সমস্ত বাংলা পর্বসমূহ | নোভী ও কার্ণেল সিরিজ" lang={CURRENT_LANG}>
   <main class="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
 
-    <header class="text-center mb-12">
-      <h1 class="text-3xl font-heading font-extrabold text-accent-primary mb-3">
+    <header class="text-center mb-4">
+      <h1 class="text-2xl font-heading font-bold mb-3 text-accent-secondary">
         সম্পূর্ণ সংরক্ষণাগার (বাংলা)
       </h1>
-      <p class="text-xl text-support-muted">
-        নোভী এবং কার্ণেল-এর জগতের সমস্ত অধ্যায় দেখুন। প্রতিটি বিষয়বস্তু একটি নতুন সিরিজ।
-      </p>
 
-      <div class="dark-layer mt-6 flex justify-center space-x-4">
-        <a href="/blog/en/" class="px-4 py-2 text-sm font-semibold bg-support-muted rounded-full hover:bg-support-muted/90">
+      <div class="dark-layer mt-4 flex justify-center space-x-4">
+        <a href="/blog/en/" class="px-4 py-2 text-sm font-semibold bg-accent-primary rounded-full shadow-md hover:bg-accent-primary/90">
           English (EN)
         </a>
-        <a href="/blog/bn/" class="px-4 py-2 text-sm font-semibold bg-accent-primary rounded-full shadow-md hover:bg-accent-primary/90">
+        <a href="/blog/bn/" class="px-4 py-2 text-sm font-semibold bg-support-muted rounded-full hover:bg-support-muted/90">
           বাংলা (BN)
         </a>
       </div>
     </header>
 
-    {allBengaliPosts.length === 0 && (
-      <div class="text-center py-20 bg-neutral-light/50 dark:bg-neutral-dark/50 rounded-lg border-2 border-dashed border-support-muted/50">
-        <p class="text-2xl font-semibold text-support-tertiary">
+    {allEnglishPosts.length === 0 && (
+      <div class="text-center py-20 bg-neutral-light/50 rounded-lg border-2 border-dashed border-support-muted/50">
+        <p class="text-xl font-semibold text-support-tertiary">
           কোন বাংলা পর্ব পাওয়া যায়নি।
         </p>
         <p class="text-support-muted mt-2">
@@ -71,13 +76,10 @@ const subjectsWithPosts = groupPostsBySubject(allBengaliPosts);
       {subjectsWithPosts.map(([subjectTitle, posts], idx) => (
         <section class={idx === 0 ? "pt-8" : "border-t pt-8 border-support-muted/30"}>
           
-          <div class="mb-8 p-4 bg-accent-muted/10 dark:bg-neutral-dark/60 rounded-lg border-l-4 border-accent-primary shadow-md">
-            <h2 class="text-2xl font-heading font-bold mt-0 mb-1">
-              সিরিজ: {subjectTitle}
+          <div class="mb-8 p-4 bg-accent-muted/10 rounded-lg border-l-4 border-accent-primary shadow-md">
+            <h2 class="text-xl font-heading font-bold mt-0 mb-1 text-neutral-dark/80">
+              সিরিজ: {subjectTitle} <span class="text-accent-primary font-extrabold">( {posts.length} )</span>
             </h2>
-            <p class="text-support-tertiary dark:text-accent-muted text-lg">
-              এই বিষয়বস্তুর জন্য {posts.length} পর্বের সম্পূর্ণ সংরক্ষণাগার।
-            </p>
           </div>
 
           <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
