@@ -1,6 +1,7 @@
 ---
 // src/components/BaseHead.astro
 import { SITE_TITLE, SITE_DESCRIPTION } from '../consts';
+import '../styles/global.css';
 
 interface Props {
 	title?: string;
@@ -19,6 +20,3 @@ const { title = SITE_TITLE, description = SITE_DESCRIPTION } = Astro.props;
 <link rel="icon" type="image/svg+xml" href="/favicon/favicon.ico" />
 <link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-touch-icon.png">
 <link rel="manifest" href="/favicon/site.webmanifest">
-
-<!-- Link to your global CSS (where @font-face rules and Tailwind directives live) -->
-<link rel="stylesheet" href="/src/styles/global.css" />
