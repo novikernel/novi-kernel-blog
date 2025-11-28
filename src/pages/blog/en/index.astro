@@ -7,8 +7,12 @@ type BlogEntry = CollectionEntry<'blog'>;
 
 const CURRENT_LANG = 'en';
 
+// 2. Get today's date at midnight (to compare only the date part)
+const today = new Date();
+today.setHours(0, 0, 0, 0);
+
 // 1. Fetch only English posts
-const rawPosts = await getCollection('blog', ({ data }) => data.lang === CURRENT_LANG);
+const rawPosts = await getCollection('blog', ({ data }) => data.lang === CURRENT_LANG && data.pubDate <= today);
 
 // 2. Sort AND Clean the slugs immediately
 // This ensures that when PostCard reads 'post.slug', it sees "my-post" instead of "en/my-post"
