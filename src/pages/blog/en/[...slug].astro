@@ -9,8 +9,11 @@ const clenedslug = slug.replace(/^en\//, '');
 const CURRENT_LANG = 'en';
 console.log("Debug: ", clenedslug, slug);
 
+const today = new Date();
+today.setHours(0, 0, 0, 0);
+
 // 1. Fetch only English posts
-const rawPosts = await getCollection('blog', ({ data }) => data.lang === CURRENT_LANG);
+const rawPosts = await getCollection('blog', ({ data }) => data.lang === CURRENT_LANG && data.pubDate <= today);
 
 // 2. Sort AND Clean the slugs immediately
 // This ensures that when PostCard reads 'post.slug', it sees "my-post" instead of "en/my-post"
