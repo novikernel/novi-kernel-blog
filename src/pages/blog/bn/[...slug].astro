@@ -7,7 +7,6 @@ const { slug } = Astro.params;
 
 const clenedslug = slug.replace(/^bn\//, '');
 const CURRENT_LANG = 'bn';
-console.log("Debug: ", clenedslug, slug);
 
 // 1. Fetch only English posts
 const rawPosts = await getCollection('blog', ({ data }) => data.lang === CURRENT_LANG);

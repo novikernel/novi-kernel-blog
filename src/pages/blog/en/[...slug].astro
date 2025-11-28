@@ -7,7 +7,6 @@ const { slug } = Astro.params;
 
 const clenedslug = slug.replace(/^en\//, '');
 const CURRENT_LANG = 'en';
-console.log("Debug: ", clenedslug, slug);
 
 const today = new Date();
 today.setHours(0, 0, 0, 0);
