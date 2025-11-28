@@ -47,7 +47,7 @@ const prevPost = sortedPosts[prevPostIndex] || null;
 const { Content } = await post.render();
 
 export async function getStaticPaths() {
-  const posts = await getCollection('blog', p => p.data.lang === 'en');
+  const posts = await getCollection('blog', p => p.data.lang === 'en' && p.data.pubDate <= new Date());
   
   return posts.map(post => {
     // 💥 FIX 2: Remove the "en/" prefix from the slug for the URL
