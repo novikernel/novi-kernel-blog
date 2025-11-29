@@ -2,11 +2,11 @@ name: Scheduled Redeploy (Weekly)
 
 on:
   schedule:
-    - cron: "30 12 * * 6"   # Saturday 6 PM IST
-  workflow_dispatch:
+    - cron: "30 12 * * 6"   # Saturday 6 PM IST (12:30 UTC)
+  workflow_dispatch:        # Allows manual triggering for testing
 
 permissions:
-  contents: write   # required for pushing to gh-pages
+  contents: write           # Required for pushing to gh-pages
 
 jobs:
   redeploy:
@@ -22,13 +22,15 @@ jobs:
           node-version: 18
 
       - name: Install dependencies
-        run: npm install
+        # 'npm ci' is preferred in CI/CD pipelines (clean install based on lock file)
+        # but 'npm install' works fine too.
+        run: npm ci
 
       - name: Build site
         run: npm run build
 
       - name: Deploy to gh-pages
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          npx gh-pages -d dist -b gh-pages -t
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          branch: gh-pages  # The branch to push to
+          folder: dist      # The folder your build script generates
