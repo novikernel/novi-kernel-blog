@@ -1,0 +1,23 @@
+name: Scheduled Redeploy (Weekly)
+
+on:
+  schedule:
+    - cron: "30 12 * * 6"   # Every Saturday at 6 PM IST (12:30 UTC)
+  workflow_dispatch:        # manual run button
+
+jobs:
+  redeploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Create empty commit
+        run: |
+          git config user.name "github-actions"
+          git config user.email "github-actions@github.com"
+          git commit --allow-empty -m "Scheduled rebuild: $(date)" || echo "No changes"
+
+      - name: Push commit
+        run: git push
