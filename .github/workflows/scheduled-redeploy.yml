@@ -2,8 +2,11 @@ name: Scheduled Redeploy (Weekly)
 
 on:
   schedule:
-    - cron: "30 12 * * 6"   # Every Saturday at 6 PM IST (12:30 UTC)
-  workflow_dispatch:        # manual run button
+    - cron: "30 12 * * 6"
+  workflow_dispatch:
+
+permissions:
+  contents: write
 
 jobs:
   redeploy:
