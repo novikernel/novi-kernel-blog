@@ -5,14 +5,15 @@
 const AVATAR_PLACEHOLDERS = {
     NOVI: '/images/cast/novi-avatar.png',
     KERNEL: '/images/cast/kernel-avatar.png',
+    BUGSYBOO: '/images/cast/bugsyboo-avatar.png',
     AUNT_SONAR: '/images/cast/sonar-avatar.png',
     AUDI: '/images/cast/audi-avatar.png',
     FLOPPY: '/images/cast/floppy-avatar.png',
     CODEX: '/images/cast/codex-avatar.png',
     ENIGMA: '/images/cast/enigma-avatar.png',
     BUGGY: '/images/cast/buggy-avatar.png',
-    BUGSYBOO: '/images/cast/bugsyboo-avatar.png',
-    SUPPORT: 'https://placehold.co/100x100/7D8B94/FAFAFA?text=THRD', // Generic fallback
+    PAL: '/images/cast/pal-avatar.png',
+    SUPPORT: '/images/cast/fallback-avatar.png', // Generic fallback
 };
 
 /**
@@ -114,7 +115,16 @@ export const CHARACTERS = [
         personality: "Charismatic, flashy, and intensely competitive.",
         type: "Thread Unit",
     },
-    
+    {
+        name: "Pal",
+        tagline: "The Queen of Elegance",
+        affiliation: "support",
+        idCode: "THRD-1001",
+        avatarSrc: AVATAR_PLACEHOLDERS.PAL,
+        motto: "I speak when it matters. I travel because stillness feels too small. And yes, I am loyal to coffee.",
+        personality: "Calm, composed, observant; a gentle presence with precise movements.",
+        type: "Thread Unit",
+    }
 ];
 
 /**
