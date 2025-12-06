@@ -1,0 +1,194 @@
+<!DOCTYPE html><html lang="en" class="scroll-smooth"> <head><!-- BaseHead handles the core HTML Head elements (meta, viewport, favicons) --><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Kernel&#39;s Uninvited Guest - Something Doesn&#39;t Add Up ..</title><meta name="description" content="Hosting a guest shouldn't feel like a security breach. Yet somehow, this one did. And… this was only the beginning."><!-- Favicons & Manifest (files are in public/favicon/) --><link rel="icon" type="image/svg+xml" href="/favicon/favicon.ico"><link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-touch-icon.png"><link rel="manifest" href="/favicon/site.webmanifest"><link rel="stylesheet" href="/_astro/about.BKRnGf7e.css"></head> <body> <!-- 1. Header (Fixed at top) --> <header id="main-header" class="fixed top-0 w-full z-50 transition-all bg-transparent"> <div class="container mx-auto h-24 px-4 flex items-center justify-between"> <a href="/" class="flex items-center h-full hover:opacity-80 lg:ml-16"> <img src="/logos/novikernel-hrz-lockup.svg" class="h-20 w-auto object-contain" alt="Logo"> </a> <nav class="hidden lg:flex items-center space-x-10 lg:mr-16"> <a href="/" class="text-lg font-medium transition duration-200 hover:text-accent-primary no-underline text-neutral-light dark:text-neutral-light"> Home </a><a href="/blog" class="text-lg font-medium transition duration-200 hover:text-accent-primary no-underline text-neutral-light dark:text-neutral-light text-accent-primary font-extrabold border-b-2 border-accent-primary"> Blog </a><a href="/about" class="text-lg font-medium transition duration-200 hover:text-accent-primary no-underline text-neutral-light dark:text-neutral-light"> About </a><a href="/cast" class="text-lg font-medium transition duration-200 hover:text-accent-primary no-underline text-neutral-light dark:text-neutral-light"> Cast </a> </nav> <div class="flex items-center lg:hidden">  <button id="mobile-menu-btn" aria-label="Toggle navigation" class="flex flex-col gap-1.5 z-[60] relative group">  <span id="line-top" class="block h-[3px] w-7 bg-neutral-dark transition-all duration-300 ease-in-out"></span>  <span id="line-middle" class="block h-[3px] w-7 bg-neutral-dark transition-all duration-300 ease-in-out"></span>  <span id="line-bottom" class="block h-[3px] w-7 bg-neutral-dark transition-all duration-300 ease-in-out"></span> </button>  <div id="mobile-overlay" class="fixed inset-0 bg-black/40 z-40 hidden transition-opacity duration-300 opacity-0"></div>  <nav id="mobile-panel" class="fixed top-0 right-0 h-full w-64 bg-white shadow-xl z-50 transition-transform duration-300 translate-x-full"> <div class="p-6 space-y-6 mt-16"> <a href="/" class="mobile-link block text-lg font-medium text-neutral-dark hover:text-accent-primary"> Home </a><a href="/blog" class="mobile-link block text-lg font-medium text-neutral-dark hover:text-accent-primary"> Blog </a><a href="/about" class="mobile-link block text-lg font-medium text-neutral-dark hover:text-accent-primary"> About </a><a href="/cast" class="mobile-link block text-lg font-medium text-neutral-dark hover:text-accent-primary"> Cast </a> </div> </nav> </div> </div> </header> <script type="module">const e=document.getElementById("main-header"),c=e?e.querySelectorAll("nav a"):[],y=10;if(e){const s=["bg-neutral-light","shadow-md","text-neutral-dark","dark:bg-neutral-dark","dark:text-neutral-light"],o=["bg-transparent","shadow-none","text-neutral-light","dark:text-neutral-light"],d=["!text-neutral-dark","dark:!text-neutral-light"],i=()=>{window.scrollY>y?(e.classList.add(...s),e.classList.remove(...o),c.forEach(a=>{a.classList.contains("text-accent-primary")||a.classList.add(...d)})):(e.classList.remove(...s),e.classList.add(...o),c.forEach(a=>{a.classList.remove(...d)}))};i(),window.addEventListener("scroll",i)}const r=document.getElementById("mobile-menu-btn"),t=document.getElementById("mobile-overlay"),l=document.getElementById("mobile-panel"),h=document.querySelectorAll(".mobile-link"),m=document.getElementById("line-top"),L=document.getElementById("line-middle"),u=document.getElementById("line-bottom"),g=["translate-y-[8px]","rotate-45","!bg-[#111]"],v=["opacity-0"],p=["translate-y-[-8px]","rotate-[-45deg]","!bg-[#111]"];function n(){l.classList.contains("translate-x-full")?(l.classList.remove("translate-x-full"),l.classList.add("translate-x-0"),t.classList.remove("hidden"),setTimeout(()=>{t.classList.remove("opacity-0")},10),m.classList.add(...g),L.classList.add(...v),u.classList.add(...p)):(l.classList.remove("translate-x-0"),l.classList.add("translate-x-full"),t.classList.add("opacity-0"),setTimeout(()=>{t.classList.add("hidden")},300),m.classList.remove(...g),L.classList.remove(...v),u.classList.remove(...p))}r&&r.addEventListener("click",n);t&&t.addEventListener("click",n);h.forEach(s=>{s.addEventListener("click",n)});</script> <!-- 2. Main Content Slot --> <!-- Added pt-20 to push the main content down below the fixed header --> <main class="pt-20">  <nav class="max-w-3xl mx-auto py-6 px-4 sm:px-0 flex justify-between items-center text-sm text-support-muted border-b border-support-muted/20 mb-8"> <div class="w-1/3 flex justify-start"> <a href="/blog/en/02-the-missing-blocks" class="group flex items-center font-medium text-accent-secondary hover:text-accent-primary transition-colors"> <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1 transform group-hover:-translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor"> <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path> </svg> <span class="hidden sm:inline">Prev: Ch 2</span> <span class="sm:hidden">Prev</span> </a> </div> <div class="w-1/3 flex justify-center"> <a href="/blog/en" class="flex items-center font-bold text-accent-secondary hover:underline underline-offset-4 decoration-2"> <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor"> <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path> </svg>
+Archive
+</a> </div> <div class="w-1/3 flex justify-end"> <span class="text-xs uppercase tracking-wider opacity-50 cursor-default">
+Latest
+</span> </div> </nav> <article class="prose prose-slate max-w-3xl mx-auto py-4 px-4 sm:px-0"> <div class="mb-8 border-b border-support-muted pb-4"> <span class="text-accent-secondary font-mono text-xs uppercase tracking-wider font-bold">Chapter 3</span> <h1 class="text-2xl font-bold mt-2 mb-2 text-accent-primary">Kernel&#39;s Uninvited Guest - Something Doesn&#39;t Add Up ..</h1> <p class="text-support-muted text-sm">Sat Dec 06 2025</p> </div> <p><img src="/_astro/03-kernels-guest-part1-hero-image.kgl8gMqu_2d0ehD.webp" alt="Hero Image" loading="lazy" decoding="async" fetchpriority="auto" width="2592" height="1632"></p>
+<h3>☎ The Early Morning Wake-Up Call</h3>
+<p>If there is one thing Kernel hates more than alarms, it’s unscheduled alarms.<br/>
+Which is why, at precisely 7:02 AM, the Universe chose violence.</p>
+<p>His mother called.</p>
+<p>Not the soft-chime reminder he actually sets for himself—no.<br/>
+This was the special ringtone.<br/>
+The one I secretly labelled “Critical System Failure” on his phone.<br/>
+For emergencies, love, and emotional blackmail.</p>
+<p>Kernel slapped the alarm clock first, out of muscle memory, then grabbed his phone with the face of a man accepting his fate.<br/>
+“Hello, Mom. Is the building on fire?”</p>
+<p>I smiled. Kernel’s morning personality is… let’s call it “low-bandwidth.”</p>
+<p>His mother launched directly into her mission: she needed a massive favour.<br/>
+Kernel sat up so fast he destabilized his blanket ecosystem.<br/>
+“If this involves furniture, long drives, or unfamiliar humans…the answer is a firm ‘no.’”</p>
+<p>I bit into my bagel and hovered near the doorway to eavesdrop politely.<br/>
+(Yes, that is a thing.)</p>
+<p>Turns out Mrs. Sharma’s daughter—some “poor little Palisha”—was coming to the city.<br/>
+For travelling.<br/>
+For a few days.<br/>
+And needed a place to stay.</p>
+<p>Kernel blinked so slowly I could count the frames.</p>
+<p>”Mom, we don’t have space. Novi and I live in a glorified two-bedroom filing cabinet. And, respectfully, I don’t know this person. Is she thirty, or still teething? I need context.&quot;</p>
+<p>&quot;She’s twenty-three and an absolute sweetheart! You wouldn’t even know she was there, she’s so quiet. Please, Kernel? Just for a few nights? Her mother is terribly worried.”</p>
+<p>This is where my heroic morning intervention began.</p>
+<p>”A guest?” I gasped, bursting into the room like a freshly-booted OS.<br/>
+“Oh, this is going to be so much fun!”</p>
+<p>Kernel did not share my enthusiasm.<br/>
+He gave me a look colder than a quantum-entangled refrigerator.<br/>
+Honestly? Stunning craftsmanship. Sharp edges.<br/>
+If looks could collapse a star, that one would’ve taken out a minor galaxy.</p>
+<p>I ignored it with professional excellence.</p>
+<p>”I’ll move to the study room! She can take mine. It’s only a few days!” I said, waving my bagel optimistically.</p>
+<p>Kernel’s gaze stayed fixed, as though trying to communicate via intense, silent Wi-Fi.</p>
+<p>I winked at him cheerfully, took another bite, and leaned toward the phone.<br/>
+“Consider it done, Mrs. K! We’d love to help out!”</p>
+<p>Kernel collapsed face-first into his pillow in a soundless scream—<br/>
+the type of existential compression that could convert a human soul into a PDF.</p>
+<p>And just like that, our peaceful morning had been successfully… scrambled.</p>
+<p>(You’re welcome, Kernel.)</p>
+<h3>👤The Guest Arrives</h3>
+<p>The doorbell rang at exactly 3:30 PM, and Kernel released a sigh that sounded like an overworked CPU exhaust fan preparing for retirement.<br/>
+He opened the door wearing his standard “weary-but-polite” facade—my favourite of his early-afternoon survival protocols.</p>
+<p>The girl standing outside was… dramatically above our usual visual bandwidth.<br/>
+Stunning—dashing—with hair arranged so perfectly it seemed to have a long-term service contract with gravity.<br/>
+She rested a moderately large trolley bag beside her, poised and composed.</p>
+<p>”Hello, I’m Pal,” she said, bypassing warming-up rituals and jumping straight to the primary handshake protocol.<br/>
+“I believe my mother informed you of my arrival?”</p>
+<p>Kernel’s smile tightened instantly, like a knot pulled too hard and too fast.</p>
+<p>”Yes, of course. We… weren’t sure when exactly you’d be coming,” he replied, trying to sound welcoming.<br/>
+Instead, he sounded like someone politely assessing whether she might be an undercover operative.</p>
+<p>Pal did not apologize.<br/>
+Instead, she casually stepped a little further inside and began scanning the foyer—slow, deliberate, and strangely analytical.</p>
+<p>Now, I assumed she was just familiarising herself with the place she’d be staying for the next few days.<br/>
+Or maybe she was silently admiring my decoration taste.<br/>
+(It happens. People rarely admit it, but it happens.)</p>
+<p>But Kernel…<br/>
+Kernel absolutely did not interpret it that way.<br/>
+His expression shifted into a very specific setting:<br/>
+“Why is this stranger mapping my house like she’s planning a heist?&quot;</p>
+<p>&quot;Oh? Well, I’m here now,” Pal said, glancing around with calm precision.<br/>
+“I just need to drop my things.”</p>
+<p>Kernel stared at the suitcase, then at her, then back at the suitcase.<br/>
+His face transformed from mild suspicion to imminent system failure.</p>
+<p>”Drop… your things?” he repeated.<br/>
+He made <i>drop</i> sound like a Class-3 felony.</p>
+<p>Pal ignored the tone entirely and wheeled her suitcase all the way inside, still observing everything with clinical interest.<br/>
+Wall.<br/>
+Coat rack.<br/>
+Decor.<br/>
+Flooring.<br/>
+Kernel’s soul leaving his body.</p>
+<p>Time to activate the human firewall—me.</p>
+<p>”Hi! I’m Novi!” I chirped, appearing beside Pal just in time to prevent Kernel from initiating the ‘Citizen, State Your Intentions’ protocol.<br/>
+“Please settle in first! And if you need anything, feel free to call me.”</p>
+<p>Pal brightened immediately—angelic, glowing, the kind of smile that could bless a village while simultaneously demanding better plumbing standards.</p>
+<p>”Oh perfect! I’m sure you know exactly where the best place for the luggage is. And—where do you keep the kettle? I need a coffee immediately.”</p>
+<p>Highly efficient.<br/>
+Caffeine-first ideology.<br/>
+I respected it deeply.</p>
+<p>Kernel inhaled sharply, preparing to remind her we were hosts, not household staff.</p>
+<p>I intercepted that inhale like a seasoned professional.</p>
+<p>”Oh! Don’t worry about the luggage—I’ll handle it. And yes, coffee warm-up time is a great idea. Come on, I’ll show you the kitchen!”</p>
+<p>I tossed Kernel a triumphant <i>See? Everything’s fine!</i> look.</p>
+<p>Kernel stared back with the horror of a man witnessing his carefully engineered ecosystem being dismantled by a caffeinated stranger and an overly enthusiastic cohabitant.</p>
+<p>I understood his concern.<br/>
+I just chose not to acknowledge it.</p>
+<h3>🛟 The Three-Day Survival Protocol<br/><small>(that nobody ever paid me for)</small></h3>
+<p>The next few days turned into a weird cycle:<br/>
+Me, mediating.<br/>
+Pal, existing ominously politely.<br/>
+Kernel, patrolling the apartment like a suspicious mall cop.</p>
+<p>By noon on Day One, Pal had smoothly taken over my room.<br/>
+Perfectly folded clothes.<br/>
+Perfectly organised desk.<br/>
+Perfectly polite thank you.</p>
+<p>I didn’t mind.<br/>
+But Kernel… Kernel’s eyebrows had developed a permanent Warning Mode.</p>
+<p>Now we enter Day One for real:</p>
+<h3>Day One — The Negotiation That Was Not a Negotiation</h3>
+<p>Pal approached Kernel in the kitchen, posture regal, voice soft but formal.</p>
+<p>”Kernel,” she said, “about the matter of occupancy—there are… certain durations we may need to review.”</p>
+<p>Kernel froze.</p>
+<p>Then looked at me.</p>
+<p>Very slowly.</p>
+<p>Like hoping I would diagnose whether she was hinting at:<br/>
+a) staying longer<br/>
+b) prospective tenant<br/>
+c) negotiating a merger<br/>
+d) planning a heist</p>
+<p>I laughed brightly—the kind of laugh that collapses under its own weight.</p>
+<p>”Oh that! Hahaha… you know travellers! They talk about… um… durations… generally! Like how long people stay… in places!”</p>
+<p>Pal nodded with serene authority.<br/>
+Kernel’s stare said:<br/>
+<i>Novi. What. Are. You. Saying.</i></p>
+<p>But I kept smiling because that’s what heroes do in times of creeping panic.</p>
+<h3>Day Two — Unauthorized Access Detected</h3>
+<p>And that brings us to Day Two — the day Kernel’s suspicion evolved into something… more structured.</p>
+<p><strong>(Meanwhile, on Kernel’s side…)</strong></p>
+<p>Kernel reached his room intending to grab his charger — nothing more, nothing dramatic.<br/>
+But the door was already ajar.<br/>
+He paused.</p>
+<p>Inside, Pal stood near his half-open drawer, leaning forward, scanning something inside—too focused, too precise. Before he could speak, she closed her fingers around something small and metallic, and in one smooth motion slipped it into her pocket.</p>
+<p>Kernel’s pulse hit a warning threshold.</p>
+<p>She turned—too quickly—and her foot caught the edge of the carpet. She swayed, losing balance for a split second.<br/>
+Kernel moved on instinct, catching her wrist before she fell.</p>
+<p>For one sharp, suspended moment they were frozen. Her breath hitched. His grip tightened, steady, surprised at its own reflex.</p>
+<p>Then Pal straightened, composed in an instant—like the stumble never happened.<br/>
+Kernel let go slowly.</p>
+<p>His voice came out harder than he meant:<br/>
+”…What are you doing in my room?”</p>
+<p>Pal didn’t look flustered. If anything, she seemed… mildly inconvenienced.<br/>
+“I was only looking for something Novi requested,” she said calmly.</p>
+<p>Kernel’s eyes flicked — not to her face, but to the pocket where she’d slipped the object. His brain was already running worst-case scenarios, constructing possibilities faster than he could dismiss them.</p>
+<p>”That,” he said, pointing at the pocket, “what did you take?”</p>
+<p>Her gaze didn’t shift.<br/>
+“You can relax, Kernel. It’s not what you’re assuming.”</p>
+<p>Her tone was polite.<br/>
+Almost soothing.<br/>
+But not clarifying.<br/>
+Which somehow made it worse.</p>
+<p>Kernel took a step closer, caught between irritation and unease.<br/>
+“Why did you touch my things?”</p>
+<p>Before she could respond, hurried footsteps approached.<br/>
+Novi burst into the doorway, waving a hand.</p>
+<p>”WAIT—yes—that was me! I told her to find the blue pen drive because I misplaced it! My mistake! My panic! My chaos!”</p>
+<p>Kernel blinked.<br/>
+Novi blinked back, smiling apologetically.</p>
+<p>Pal slowly took out the pen drive from her pocket and handed it to Novi.<br/>
+“It’s fine, Novi,” she said, voice cool.<br/>
+“Let him keep his assumptions.”</p>
+<p>Then she walked past both of them, calm, unhurried, unreadable.</p>
+<p>Kernel and Novi stood in the silence she left behind.<br/>
+Kernel stared at the drawer.<br/>
+Then at Novi.<br/>
+Then at the doorway where Pal had disappeared.</p>
+<p>Nothing added up.<br/>
+And that, somehow, was worse than if everything had.</p>
+<h3>Day Three — The Apology Operation</h3>
+<p>Kernel barely slept.<br/>
+Every time he closed his eyes, the drawer scene replayed — sharper, heavier, more humiliating.</p>
+<p>By morning, the guilt had settled into his chest like a weight he couldn’t dislodge.</p>
+<p>He moved through the apartment quietly, avoiding both eye contact and conversation.</p>
+<p>Novi tried twice to cheer him up; both attempts skimmed off him like static.</p>
+<p>By afternoon, he had made up his mind.<br/>
+He needed to apologize. Properly this time.</p>
+<p>He trudged to Pal’s door, rehearsing under his breath.<br/>
+<i>I was mistaken. I misread the situation. You were helping Novi. I’m sorry.</i></p>
+<p>He lifted his hand to knock.</p>
+<p>Kernel froze mid-knock.</p>
+<p>Her voice floated out, soft but firm, like someone reporting progress on an assignment.</p>
+<p>”Yes, I will wrap this up. Already trying my best.”<br/>
+A pause.<br/>
+“No, I am not getting emotionally attached. I just said they’re good people.”<br/>
+Another pause.<br/>
+“Of course, I know what I came here for.”</p>
+<p><p>Kernel froze.<br/>
+Every thought stopped moving.<br/>
+He stepped back quietly, heart thudding with a new, uncomfortable possibility.<br/><br/>
+<em><b>… a possibility he wasn’t ready to name yet.</b></em></p></p> </article> <nav class="max-w-3xl mx-auto py-12 px-4 sm:px-0 mt-8 border-t border-support-muted"> <div class="flex justify-between items-center gap-4"> <div class="w-1/3 flex justify-start"> <a href="/blog/en/02-the-missing-blocks" class="flex items-center text-sm font-medium text-accent-secondary hover:text-neutral-dark bg-neutral-light border border-support-muted hover:border-accent-secondary transition-all duration-200 p-3 rounded-lg"> <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"> <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path> </svg> <span class="font-bold">Chapter 2</span> </a> </div> <div class="w-1/3 flex justify-center"> <a href="/blog/en" class="flex flex-col items-center justify-center text-sm font-medium text-support-muted hover:text-accent-primary transition-colors duration-200"> <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mb-1" fill="none" viewBox="0 0 24 24" stroke="currentColor"> <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path> </svg> <span>Archive</span> </a> </div> <div class="w-1/3 flex justify-end dark-layer"> <div class="flex items-center p-3 opacity-60 cursor-default select-none text-right"> <span class="text-sm font-medium text-support-muted mr-2">You're all caught up</span> <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"> <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path> </svg> </div> </div> </div> </nav>  </main> <!-- 3. Footer --> <footer class="dark-layer bg-neutral-dark text-neutral-light py-12 shadow-inner"> <div class="max-w-6xl mx-auto px-4"> <!-- Top Grid --> <div class="grid grid-cols-1 md:grid-cols-3 gap-10 md:gap-16 
+                border-b border-support-muted/50 pb-10 mb-8 
+                place-items-start"> <!-- Contact --> <div class="hidden md:block space-y-4 max-w-sm"> <h3 class="text-2xl font-heading font-semibold"> <span class="text-accent-primary">novi</span> // <span class="text-support-muted">kernel</span> </h3> <p class="text-accent-muted text-sm leading-relaxed">
+Exploring the seamless intersection of Passion (Novi) and Logic (Kernel) in technology and life.
+</p> <p class="text-sm">
+Email:
+<a href="mailto:novikernel@gmail.com" class="hover:text-accent-primary transition">
+novikernel@gmail.com
+</a> </p> </div> <!-- Quick Links --> <div class="hidden md:block space-y-4 pl-20 max-w-xs"> <h3 class="text-lg font-heading font-medium">Quick Links</h3> <ul class="space-y-3"> <li><a href="/" class="transition">Home</a></li> <li><a href="/blog" class="transition">Blog</a></li> <li><a href="/about" class="transition">About</a></li> <li><a href="/cast" class="transition">Cast</a></li> </ul> </div> <!-- Social Icons --> <div class="space-y-4 text-center md:text-left max-w-xs mx-auto md:mx-0"> <h3 class="text-lg font-heading font-medium">Connect</h3> <div class="flex space-x-4 justify-center md:justify-start"> <div class="flex items-center space-x-4"> <a href="https://novikernel.github.io" aria-label="GitHub" target="_blank" rel="noopener noreferrer" class="text-neutral-light hover:text-accent-primary transition-colors duration-200 p-2 rounded-full hover:bg-accent-muted/50"> <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="h-6 w-6" fill="currentColor"> <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.087-.744.084-.692.084-.692 1.205.084 1.838 1.237 1.838 1.237 1.07 1.836 2.809 1.305 3.492.998.108-.778.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.046.138 3.003.404 2.292-1.552 3.3-.322 3.3-.322.652 1.652.241 2.873.118 3.176.767.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.923.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.771-1.587 8.2-6.085 8.2-11.389 0-6.627-5.373-12-12-12z"></path> </svg> </a><a href="https://www.youtube.com/@novikernel" aria-label="YouTube" target="_blank" rel="noopener noreferrer" class="text-neutral-light hover:text-accent-primary transition-colors duration-200 p-2 rounded-full hover:bg-accent-muted/50"> <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="h-6 w-6" fill="currentColor"> <path d="M19.615 3.184c-3.64-.268-7.394-.268-11.033 0-2.458.18-3.955.932-5.418 2.394-.783.784-1.385 1.688-1.802 2.668-.426.984-.53 2.02-.32 3.11.207 1.085.642 2.094 1.298 3.036.656.942 1.503 1.76 2.54 2.384 1.037.624 2.18.966 3.417 1.045 1.237.08 2.502.072 3.768-.008 1.266-.08 2.477-.384 3.633-.912 1.156-.528 2.18-1.296 3.078-2.304.898-1.008 1.528-2.224 1.93-3.648.402-1.424.492-2.92.27-4.432-.222-1.512-.87-2.88-1.92-4.008-1.05-.12-2.12-.178-3.21-.168zm-9.615 10.316v-6.999l6 3.5-6 3.499z"></path> </svg> </a><a href="https://www.facebook.com/profile.php?id=61583955062189" aria-label="Facebook" target="_blank" rel="noopener noreferrer" class="text-neutral-light hover:text-accent-primary transition-colors duration-200 p-2 rounded-full hover:bg-accent-muted/50"> <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="h-6 w-6" fill="currentColor"> <path d="M9 8h-3v4h3v12h5v-12h3.642l.358-4h-4v-1.667c0-.958.192-1.333 1.58-1.333h2.42c.046-2.636-.595-5-5-5-3.31 0-5 1.867-5 4.735v2.265z"></path> </svg> </a><a href="mailto:novikernel@gmail.com" aria-label="Gmail" target="_self" rel="noopener noreferrer" class="text-neutral-light hover:text-accent-primary transition-colors duration-200 p-2 rounded-full hover:bg-accent-muted/50"> <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="h-6 w-6" fill="currentColor"> <path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"></path> </svg> </a> </div> </div> </div> </div> <!-- Bottom --> <div class="text-center text-sm text-accent-muted">
+&copy; 2025 Novikernel. All rights reserved. | Legal & Privacy
+</div> </div> </footer> </body></html>
