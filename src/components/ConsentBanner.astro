@@ -1,0 +1,52 @@
+<style>
+  .consent-banner {
+    @apply fixed bottom-0 left-0 right-0 bg-black text-white p-4 text-sm flex items-center justify-between gap-4 shadow-lg;
+  }
+  .consent-btn {
+    @apply bg-white text-black px-3 py-1 rounded-md cursor-pointer font-semibold;
+  }
+</style>
+
+<div id="consent-banner" class="consent-banner" style="display:none;">
+  <span>We use cookies to improve your experience. Allow analytics?</span>
+
+  <div class="flex gap-2">
+    <button class="consent-btn" id="consent-allow">Allow</button>
+    <button class="consent-btn" id="consent-deny">Deny</button>
+  </div>
+</div>
+
+<script is:inline>
+  // Show banner only if no stored choice
+  const choice = localStorage.getItem("analytics-consent");
+
+  if (!choice) {
+    document.getElementById("consent-banner").style.display = "flex";
+  }
+
+  // On Allow
+  document.getElementById("consent-allow").addEventListener("click", () => {
+    gtag('consent', 'update', {
+      ad_storage: 'granted',
+      ad_user_data: 'granted',
+      ad_personalization: 'granted',
+      analytics_storage: 'granted'
+    });
+
+    localStorage.setItem("analytics-consent", "granted");
+    document.getElementById("consent-banner").style.display = "none";
+  });
+
+  // On Deny
+  document.getElementById("consent-deny").addEventListener("click", () => {
+    gtag('consent', 'update', {
+      ad_storage: 'denied',
+      ad_user_data: 'denied',
+      ad_personalization: 'denied',
+      analytics_storage: 'denied'
+    });
+
+    localStorage.setItem("analytics-consent", "denied");
+    document.getElementById("consent-banner").style.display = "none";
+  });
+</script>

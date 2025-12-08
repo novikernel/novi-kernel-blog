@@ -4,6 +4,7 @@ import BaseHead from '../components/BaseHead.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import { SITE_TITLE, SITE_DESCRIPTION } from '../consts';
+import ConsentBanner from "../components/ConsentBanner.astro";
 
 // Define expected props
 interface Props {
@@ -33,7 +34,7 @@ const { title = SITE_TITLE, description = SITE_DESCRIPTION, lang = 'en' } = Astr
   <body>
     <!-- 1. Header (Fixed at top) -->
     <Header />
-    
+
     <!-- 2. Main Content Slot -->
     <!-- Added pt-20 to push the main content down below the fixed header -->
     <main class="pt-20">
@@ -42,5 +43,8 @@ const { title = SITE_TITLE, description = SITE_DESCRIPTION, lang = 'en' } = Astr
 
     <!-- 3. Footer -->
     <Footer />
+
+    <!-- Consent Banner (should appear early in the DOM) -->
+    <ConsentBanner />
   </body>
 </html>
