@@ -60,7 +60,7 @@ const posterImagePath = '/images/novi-kernel-hero-intro-poster.png';
 
         <div
             id="videoContainer"
-            class="flex justify-center items-center w-full overflow-hidden rounded-xl group"
+            class="relative flex justify-center items-center w-full overflow-hidden rounded-xl group"
             style="max-height: calc(100vh - 186px);"
         >
             <video
@@ -78,96 +78,178 @@ const posterImagePath = '/images/novi-kernel-hero-intro-poster.png';
                     class="h-full w-auto object-contain"
                 />
             </video>
-            
-            <button 
-                id="replayButton" 
-                class="absolute inset-0 flex items-center justify-center 
-                       bg-black/50 opacity-0 pointer-events-none transition duration-300"
-                aria-label="Replay Video"
-            >
-                <svg class="w-20 h-20 text-white" fill="currentColor" viewBox="0 0 20 20">
-                    <path d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z"></path>
-                </svg>
-            </button>
-        </div>
 
+            <div 
+                id="videoControls" 
+                class="absolute bottom-4 flex items-center space-x-4 opacity-0 transition duration-300 pointer-events-none"
+            >
+                
+                <button 
+                    id="rewindButton" 
+                    class="w-16 h-16 p-2 bg-accent-primary hover:bg-accent-primary/90 text-neutral-light rounded-full transition relative group/rewind"
+                    aria-label="Rewind 5 Seconds"
+                >
+                    <svg class="w-8 h-8 mx-auto" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M18 5l-7 7 7 7M13 5l-7 7 7 7"></path>
+                    </svg>
+                    <!-- <span class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-xs font-bold mt-0.5">
+                        -5s
+                    </span> -->
+                </button>
+
+                <button 
+                    id="playPauseButton" 
+                    class="w-20 h-20 p-2 bg-accent-primary hover:bg-accent-primary/90 text-neutral-light rounded-full transition"
+                    aria-label="Play/Pause Video"
+                >
+                    <svg id="playPauseIcon" class="w-14 h-14" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M8 5v14l11-7z"></path>
+                    </svg>
+                </button>
+
+                <button 
+                    id="forwardButton" 
+                    class="w-16 h-16 p-2 bg-accent-primary hover:bg-accent-primary/90 text-neutral-light rounded-full transition relative group/forward"
+                    aria-label="Forward 5 Seconds"
+                >
+                    <svg class="w-8 h-8 mx-auto" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M6 5l7 7-7 7M11 5l7 7-7 7"></path>
+                    </svg>
+                    <!-- <span class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-xs font-bold mt-0.5">
+                        +5s
+                    </span> -->
+                </button>
+            </div>
+        </div>
     </section>
 
     <script>
         // Note: This script runs client-side (in the browser).
-        const video = document.getElementById('heroVideo');
-        const peekButton = document.getElementById('peekButton');
-        const replayButton = document.getElementById('replayButton');
-        const videoContainer = document.getElementById('videoContainer');
+        const video = document.getElementById('heroVideo') as HTMLVideoElement | null;
+        const peekButton = document.getElementById('peekButton') as HTMLButtonElement | null;
+        const videoContainer = document.getElementById('videoContainer') as HTMLElement | null;
+        
+        // NEW: Combined Control Bar Elements (Explicitly typed)
+        const videoControls = document.getElementById('videoControls') as HTMLElement | null;
+        const playPauseButton = document.getElementById('playPauseButton') as HTMLButtonElement | null;
+        const playPauseIcon = document.getElementById('playPauseIcon') as SVGSVGElement | null;
+        const rewindButton = document.getElementById('rewindButton') as HTMLButtonElement | null;
+        const forwardButton = document.getElementById('forwardButton') as HTMLButtonElement | null;
+        
+        // FIX: Updated SVG Paths for standard Play/Pause icons
+        const playPath: string = "M8 5v14l11-7z"; // Simple Play triangle
+        const pausePath: string = "M6 19h4V5H6zm8-14v14h4V5h-4z"; // Two vertical pause lines
 
+        const updatePlayPauseIcon = (isPaused: boolean): void => {
+            if (playPauseIcon) {
+                const pathElement = playPauseIcon.querySelector('path');
+                if (pathElement) {
+                    pathElement.setAttribute('d', isPaused ? playPath : pausePath);
+                }
+            }
+        };
+        
+        // Comprehensive null check block
         if (
-            video instanceof HTMLVideoElement &&
-            peekButton instanceof HTMLButtonElement &&
-            replayButton instanceof HTMLButtonElement &&
-            videoContainer instanceof HTMLElement
+            video &&
+            peekButton &&
+            videoContainer &&
+            videoControls &&
+            playPauseButton &&
+            rewindButton &&
+            forwardButton
         ) {
             
-            // Set initial video properties
             video.style.cursor = 'pointer';
+            const seekTime: number = 5; 
 
-            // Function to reset and start video
-            const startVideo = () => {
-                video.currentTime = 0;
+            // --- VISIBILITY HELPERS ---
+
+            const hideControls = (): void => {
+                videoControls.style.opacity = '0';
+                videoControls.style.pointerEvents = 'none';
+            };
+
+            const showControls = (): void => {
+                videoControls.style.opacity = '1';
+                videoControls.style.pointerEvents = 'auto';
+            };
+
+            // --- CORE VIDEO FUNCTIONS ---
+            
+            const resumeVideo = (): void => {
                 video.play();
-                
-                // Hide replay button and remove container styling
-                replayButton.style.opacity = '0';
-                replayButton.style.pointerEvents = 'none';
                 videoContainer.classList.remove('rounded-xl', 'overflow-hidden', 'group');
             };
 
-            // 1. Handle video start via Novi's 'Peek' button
-            peekButton.onclick = startVideo;
+            const restartVideo = (): void => {
+                video.currentTime = 0;
+                resumeVideo();
+            };
 
-            // 2. Handle video end (Show replay button)
+            // --- EVENT HANDLERS ---
+
+            peekButton.onclick = restartVideo;
+
             video.onended = () => {
                 video.pause();
-                replayButton.style.opacity = '1'; 
-                replayButton.style.pointerEvents = 'auto';
-                // Add the styling back when video ends
+                
+                hideControls();
+                updatePlayPauseIcon(true);
+                
                 videoContainer.classList.add('rounded-xl', 'overflow-hidden', 'group');
             };
 
-            // 3. Handle replay on button click
-            replayButton.onclick = startVideo;
+            playPauseButton.onclick = () => {
+                if (video.paused) {
+                    if (video.ended || (video.currentTime > 0 && video.currentTime >= video.duration - 0.1)) {
+                        restartVideo();
+                    } else {
+                        resumeVideo();
+                    }
+                } else {
+                    video.pause();
+                }
+            };
 
-            // 4. Handle manual play/pause via user interaction on the video itself
             video.addEventListener('click', () => {
                 if (video.paused) {
-                    // Play: Start video logic
-                    startVideo(); 
+                    resumeVideo(); 
                 } else {
-                    // Pause: Show replay overlay
                     video.pause();
-                    
-                    // Only show the replay overlay if the video didn't end naturally
-                    if (!video.ended) {
-                        replayButton.style.opacity = '1';
-                        replayButton.style.pointerEvents = 'auto';
-                        videoContainer.classList.add('rounded-xl', 'overflow-hidden', 'group');
-                    }
                 }
             });
             
-            // Initial state: If video is paused/stopped, show container styling
+            rewindButton.onclick = () => {
+                video.currentTime = Math.max(0, video.currentTime - seekTime);
+            };
+            
+            forwardButton.onclick = () => {
+                video.currentTime = Math.min(video.duration, video.currentTime + seekTime);
+            };
+
             video.addEventListener('pause', () => {
+                updatePlayPauseIcon(true); 
+                
                 if (!video.ended) {
                     videoContainer.classList.add('rounded-xl', 'overflow-hidden', 'group');
+                    showControls(); 
+                } else {
+                    hideControls();
                 }
             });
             
-            // On play, ensure styling is removed
             video.addEventListener('play', () => {
+                updatePlayPauseIcon(false); 
                 videoContainer.classList.remove('rounded-xl', 'overflow-hidden', 'group');
+                hideControls(); 
             });
+
+            // Initial state cleanup
+            hideControls();
+            updatePlayPauseIcon(true);
         }
     </script>
-
 
     <section class="max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
         <h2 class="text-4xl font-extrabold text-center text-neutral-dark dark:text-neutral-light mb-12 border-b-2 border-accent-primary pb-2 inline-block mx-auto">
