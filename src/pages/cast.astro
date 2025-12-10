@@ -23,23 +23,12 @@ const characterGroups = getCharacterGroups();
 
 <Layout title="Casts | Novi & Kernel" description="Cast Roster | The Novi & Kernel Mission" lang="en">
     <main class="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
-
-        <!-- HEADER SECTION -->
-        <!-- <header class="text-center mb-16">
-            <h1 class="text-3xl font-heading font-extrabold text-accent-primary dark:text-neutral-light mb-4">
-                The Full Roster
-            </h1>
-            <p class="text-xl text-support-muted dark:text-accent-muted max-w-2xl mx-auto">
-                As per Novi's insistence, here is the complete data matrix. Identify the collaborators, antagonists, and key variables driving the narrative.
-            </p>
-        </header> -->
-
         <!-- CHARACTER GROUPS -->
         <div class="space-y-20">
             {characterGroups.map(([groupName, characters]) => (
                 <section>
                     <!-- Group Heading -->
-                    <h2 class="text-xl font-heading font-bold text-neutral-dark dark:text-neutral-light mb-10 border-b-4 border-support-muted/50 pb-2 inline-block">
+                    <h2 class="text-xl font-heading font-bold text-neutral-dark mb-10 border-b-4 border-support-muted/50 pb-2 inline-block">
                         {groupName}
                     </h2>
                     
@@ -55,7 +44,7 @@ const characterGroups = getCharacterGroups();
 
         <!-- CTA BACK TO MISSION -->
         <div class="dark-layer text-center mt-20 pt-10 border-t border-support-muted/30">
-            <p class="text-lg text-support-tertiary dark:text-accent-muted mb-4">
+            <p class="text-lg text-support-tertiary mb-4">
                 Roster acquired. Ready to dive into the data?
             </p>
             <a href="/blog/" class="px-8 py-3 text-lg font-semibold text-neutral-light bg-status-success rounded-lg shadow-md hover:bg-status-success/90 transition duration-300 no-underline">

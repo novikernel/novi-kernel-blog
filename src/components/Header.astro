@@ -36,8 +36,8 @@ const baseLineClasses = "block h-[3px] w-7 bg-neutral-dark transition-all durati
                         href={item.href} 
                         class:list={[
                             "text-lg font-medium transition duration-200 hover:text-accent-primary no-underline",
-                            // Default text color when header is transparent (light text assumed)
-                            "text-neutral-light dark:text-neutral-light",
+                            // Default text color when header is transparent
+                            "text-neutral-dark",
                             // Apply active classes conditionally
                             { [activeClasses]: isActive }
                         ]}
@@ -87,11 +87,11 @@ const baseLineClasses = "block h-[3px] w-7 bg-neutral-dark transition-all durati
     const scrollThreshold = 10;
 
     if (header) {
-        const scrolledClasses = ['bg-neutral-light', 'shadow-md', 'text-neutral-dark', 'dark:bg-neutral-dark', 'dark:text-neutral-light'];
-        const topClasses = ['bg-transparent', 'shadow-none', 'text-neutral-light', 'dark:text-neutral-light'];
+        const scrolledClasses = ['bg-neutral-light', 'shadow-md', 'text-neutral-dark'];
+        const topClasses = ['bg-transparent', 'shadow-none', 'text-neutral-dark'];
         
         // Classes to apply to links when scrolled/light background
-        const linkScrolledClasses = ['!text-neutral-dark', 'dark:!text-neutral-light'];
+        const linkScrolledClasses = ['!text-neutral-dark'];
         
         const updateHeader = () => {
             if (window.scrollY > scrollThreshold) {
