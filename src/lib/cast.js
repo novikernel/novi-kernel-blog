@@ -13,6 +13,7 @@ const AVATAR_PLACEHOLDERS = {
     ENIGMA: '/images/cast/enigma-avatar.png',
     BUGGY: '/images/cast/buggy-avatar.png',
     PAL: '/images/cast/pal-avatar.png',
+    FLIP: '/images/cast/flip-avatar.png',
     SUPPORT: '/images/cast/fallback-avatar.png', // Generic fallback
 };
 
@@ -123,6 +124,16 @@ export const CHARACTERS = [
         avatarSrc: AVATAR_PLACEHOLDERS.PAL,
         motto: "I speak when it matters. I travel because stillness feels too small. And yes, I am loyal to coffee.",
         personality: "Calm, composed, observant; a gentle presence with precise movements.",
+        type: "Thread Unit",
+    },
+    {
+        name: "Flip",
+        tagline: "The High-Speed Rookie",
+        affiliation: "support",
+        idCode: "THRD-1010",
+        avatarSrc: AVATAR_PLACEHOLDERS.FLIP,
+        motto: "It was a small change.",
+        personality: "High-energy, approval-hungry, executes before waiting for locks. Learns quickly—after rollback.",
         type: "Thread Unit",
     }
 ];
