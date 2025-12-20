@@ -9,7 +9,7 @@ const clenedslug = slug.replace(/^en\//, '');
 const CURRENT_LANG = 'en';
 
 const today = new Date();
-today.setHours(0, 0, 0, 0);
+today.setHours(23, 59, 59, 999);
 
 // 1. Fetch only English posts
 const rawPosts = await getCollection('blog', ({ data }) => data.lang === CURRENT_LANG && data.pubDate <= today);
