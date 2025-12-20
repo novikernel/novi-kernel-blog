@@ -10,7 +10,7 @@ const CURRENT_LANG = 'en';
 
 // 2. Get today's date at midnight (to compare only the date part)
 const today = new Date();
-today.setHours(0, 0, 0, 0);
+today.setHours(23, 59, 59, 999);
 
 // --- DATA FETCHING: Get the 3 latest English posts ---
 // 1. Fetch only English posts
