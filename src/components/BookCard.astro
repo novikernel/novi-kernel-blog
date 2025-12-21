@@ -1,0 +1,153 @@
+---
+import type { CollectionEntry } from 'astro:content';
+
+type Post = CollectionEntry<'blog'>;
+
+interface Props {
+  subjectTitle: string;
+  posts: Post[];
+}
+
+const { subjectTitle, posts } = Astro.props;
+const chapterCount = posts.length;
+---
+
+<div class="book-wrapper mx-8 mb-16 w-[320px] h-[430px] relative inline-block">
+  <div class="book relative w-full h-full">
+
+    <!-- FRONT COVER (HINGED) -->
+    <div class="book-cover absolute inset-0 z-30 bg-neutral-light border-2 border-support-muted/20 rounded-r-xl shadow-xl p-8 flex flex-col items-center justify-center cursor-pointer">
+      <!-- Spine -->
+      <div class="absolute left-0 top-0 bottom-0 w-8 bg-gradient-to-r from-support-muted/20 to-transparent flex flex-col justify-around py-6 border-r border-accent-muted/20">
+        {[...Array(10)].map(() => (
+          <div class="w-5 h-5 rounded-full border-2 border-support-muted/40 bg-neutral-light/60 -ml-2.5 shadow-sm"></div>
+        ))}
+      </div>
+
+      <div class="text-center space-y-6 cover-content">
+        <div class="w-24 h-24 bg-accent-secondary/20 rounded-full flex items-center justify-center mx-auto border border-accent-secondary/70">
+          <img 
+            src="/images/stamp.jpg" 
+            alt="novi//kernel Stamp" 
+            class="w-full h-full object-cover p-1 rounded-full"
+          />
+        </div>
+
+        <h2 class="text-2xl font-heading font-bold text-accent-primary leading-tight pb-2">
+          {subjectTitle}
+        </h2>
+
+        <span class="px-4 py-1.5 bg-accent-secondary text-neutral-light rounded-md text-xs font-semibold uppercase tracking-widest border border-accent-secondary">
+          {chapterCount} Volumes
+        </span>
+
+        <p class="text-accent-primary text-xs font-bold uppercase tracking-widest pt-4">
+          Open Archive
+        </p>
+      </div>
+    </div>
+
+    <!-- INNER CONTENT (STATIC) -->
+    <div class="book-inner absolute inset-0 z-10 flex bg-neutral-light border-2 border-support-muted/20 rounded-xl shadow-2xl overflow-hidden">
+
+      <!-- RIGHT PAGE -->
+      <div class="w-full h-full flex flex-col">
+        <div class="p-5 border-b border-support-muted/10">
+          <h3 class="font-heading font-bold text-sm text-accent-primary uppercase">
+            Index Entries
+          </h3>
+        </div>
+
+        <div class="flex-1 overflow-y-auto p-5 custom-scrollbar bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] [background-size:20px_20px]">
+          <ul class="space-y-4">
+            {posts.map((post: Post) => (
+              <li class="border-b border-support-muted/20 pb-3 last:border-0">
+                <a href={`/blog/en/${post.slug}`} class="block transition-all hover:translate-x-1">
+                  <div class="flex items-baseline gap-3">
+                    <span class="text-[10px] font-mono text-accent-primary">
+                      #{post.data.chapter.toString().padStart(2, '0')}
+                    </span>
+                    <span class="text-sm font-bold text-neutral-dark hover:text-accent-primary transition-colors">
+                      {post.data.title}
+                    </span>
+                  </div>
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        <div class="p-3 bg-neutral-50 text-center">
+          <button class="close-btn text-[9px] font-black text-neutral-400 uppercase tracking-[0.2em] hover:text-accent-primary transition-colors">
+            [ Close Archive ]
+          </button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<style>
+.book {
+  perspective: 1400px;
+}
+
+/* Hinged cover */
+.book-cover {
+  transform-origin: left center;
+  transform-style: preserve-3d;
+  transition: transform 700ms ease;
+}
+
+/* Cover content fade */
+.cover-content {
+  transition: opacity 300ms ease, transform 300ms ease;
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* Open state */
+.book.is-open .book-cover {
+  transform: rotateY(-92deg);
+  pointer-events: none;
+}
+
+.book.is-open .cover-content {
+  opacity: 0;
+  transform: translateX(-10px);
+  pointer-events: none;
+  transition-delay: 120ms;
+}
+
+
+/* Scrollbar */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 3px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: theme('colors.accent-secondary');
+  border-radius: 10px;
+}
+</style>
+
+<script>
+document.addEventListener('click', (e) => {
+  const target = e.target;
+  if (!(target instanceof Element)) return;
+
+  const book = target.closest('.book');
+  if (!book) return;
+
+  if (target.closest('.close-btn')) {
+    book.classList.remove('is-open');
+    return;
+  }
+
+  if (!book.classList.contains('is-open')) {
+    book.classList.add('is-open');
+  }
+});
+</script>
+
