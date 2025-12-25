@@ -108,11 +108,30 @@ export async function getStaticPaths() {
     </div>
   </nav>
 
-
   <article class="prose prose-slate max-w-3xl mx-auto py-4 px-4 sm:px-0">
     <div class="mb-8 border-b border-support-muted pb-4">
       <span class="text-accent-secondary font-mono text-xs uppercase tracking-wider font-bold">Chapter {post.data.chapter}</span>
       <h1 class="text-2xl font-bold mt-2 mb-2 text-accent-primary">{post.data.title}</h1>
+      <div class="mb-10 flex justify-center sm:justify-start">
+        <a 
+          href="https://www.youtube.com/watch?v=DEN43zjYndc" 
+          target="_blank" 
+          rel="noopener noreferrer"
+          class="inline-flex items-center gap-3 no-underline group bg-neutral-light/50 px-3 py-1.5 rounded-full border border-support-muted/10 hover:border-accent-primary/30 transition-all duration-300"
+        >
+          <span class="relative flex h-2 w-2">
+            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-accent-primary opacity-75"></span>
+            <span class="relative inline-flex rounded-full h-2 w-2 bg-accent-primary"></span>
+          </span>
+
+          <span class="font-mono text-[10px] sm:text-xs tracking-widest uppercase transition-all duration-300 flex items-center gap-2">
+            <span class="text-support-tertiary/60">System Status:</span>
+            <span class="text-accent-primary group-hover:text-accent-primary group-hover:brightness-125 glitch-text">
+              [BOOT_SEQUENCE: THE_SOURCE_CODE_OF_LIFE] ▸
+            </span>
+          </span>
+        </a>
+      </div>
       <p class="text-support-muted text-sm">{post.data.pubDate.toDateString()}</p>
     </div>
     
