@@ -1,14 +1,17 @@
 ---
 import { getCollection, type CollectionEntry } from 'astro:content';
 import Layout from '../../../layouts/BaseLayout.astro';
-import PostCard from '../../../components/PostCard.astro';
+import BookCard from '../../../components/BookCard.astro';
 
 type BlogEntry = CollectionEntry<'blog'>;
 
 const CURRENT_LANG = 'bn';
 
+const today = new Date();
+today.setHours(23, 59, 59, 999);
+
 // 1. Fetch only English posts
-const rawPosts = await getCollection('blog', ({ data }) => data.lang === CURRENT_LANG);
+const rawPosts = await getCollection('blog', ({ data }) => data.lang === CURRENT_LANG && data.pubDate <= today);
 
 // 2. Sort AND Clean the slugs immediately
 // This ensures that when PostCard reads 'post.slug', it sees "my-post" instead of "bn/my-post"
@@ -22,7 +25,7 @@ const allEnglishPosts = rawPosts
 // Group by subject
 const groupPostsBySubject = (posts: BlogEntry[]) => {
   const grouped = posts.reduce((acc, post) => {
-    const subject = post.data.subject ?? "Uncategorized";
+    const subject = post.data.subject ?? "অশ্রেণীবদ্ধ";
     (acc[subject] ??= []).push(post);
     return acc;
   }, {} as Record<string, BlogEntry[]>);
@@ -43,54 +46,30 @@ const groupPostsBySubject = (posts: BlogEntry[]) => {
 const subjectsWithPosts = groupPostsBySubject(allEnglishPosts);
 ---
 
-<Layout title="বাংলা পর্বসমূহ | নোভী ও কার্ণেল" description="সমস্ত বাংলা পর্বসমূহ | নোভী ও কার্ণেল সিরিজ" lang={CURRENT_LANG}>
-  <main class="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
-
-    <header class="text-center mb-4">
-      <h1 class="text-2xl font-heading font-bold mb-3 text-accent-secondary">
-        সম্পূর্ণ সংরক্ষণাগার (বাংলা)
-      </h1>
-
-      <div class="dark-layer mt-4 flex justify-center space-x-4">
-        <a href="/blog/en/" class="px-4 py-2 text-sm font-semibold bg-accent-primary rounded-full shadow-md hover:bg-accent-primary/90">
+<Layout title="English Episodes | Novi & Kernel" description="All English Episodes | Novi & Kernel Series" lang={CURRENT_LANG}>
+  <main class="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8 bg-neutral-light">
+    <header class="text-center mb-12">
+      <div class="flex justify-center space-x-4 dark-layer">
+        <a href="/blog/en/" class="px-6 py-2 text-sm font-heading font-bold bg-accent-secondary rounded-full hover:bg-opacity-90 transition-all">
           English (EN)
         </a>
-        <a href="/blog/bn/" class="px-4 py-2 text-sm font-semibold bg-support-muted rounded-full hover:bg-support-muted/90">
+        <a href="/blog/bn/" class="px-6 py-2 text-sm font-heading font-bold bg-accent-primary rounded-full shadow-lg hover:opacity-90 transition-opacity">
           বাংলা (BN)
         </a>
       </div>
     </header>
 
-    {allEnglishPosts.length === 0 && (
-      <div class="text-center py-20 bg-neutral-light/50 rounded-lg border-2 border-dashed border-support-muted/50">
-        <p class="text-xl font-semibold text-support-tertiary">
-          কোন বাংলা পর্ব পাওয়া যায়নি।
-        </p>
-        <p class="text-support-muted mt-2">
-          শীঘ্রই ফিরে দেখুন, অথবা ইংরেজি আর্কাইভ চেষ্টা করুন!
-        </p>
+    {allEnglishPosts.length === 0 ? (
+       <div class="text-center py-20 bg-neutral-light rounded-2xl border-2 border-dashed border-support-muted/30">
+          <p class="text-xl font-heading font-bold text-support-muted">কোন বাংলা পর্ব পাওয়া যায়নি।</p>
+          <p class="text-accent-secondary mt-2">শীঘ্রই ফিরে দেখুন, অথবা ইংরেজি সংরক্ষণাগারে প্রবেশ করুন!</p>
+       </div>
+    ) : (
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-y-20 gap-x-8 justify-items-center">
+        {subjectsWithPosts.map(([subjectTitle, posts]) => (
+          <BookCard subjectTitle={subjectTitle} posts={posts} lang={CURRENT_LANG}/>
+        ))}
       </div>
     )}
-
-    <div class="space-y-16">
-      {subjectsWithPosts.map(([subjectTitle, posts], idx) => (
-        <section class={idx === 0 ? "pt-8" : "border-t pt-8 border-support-muted/30"}>
-          
-          <div class="mb-8 p-4 bg-accent-muted/10 rounded-lg border-l-4 border-accent-primary shadow-md">
-            <h2 class="text-xl font-heading font-bold mt-0 mb-1 text-neutral-dark/80">
-              সিরিজ: {subjectTitle} <span class="text-accent-primary font-extrabold">( {posts.length} )</span>
-            </h2>
-          </div>
-
-          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {posts.map(post => (
-              <PostCard post={post} />
-            ))}
-          </div>
-
-        </section>
-      ))}
-    </div>
-
   </main>
 </Layout>

@@ -6,10 +6,16 @@ type Post = CollectionEntry<'blog'>;
 interface Props {
   subjectTitle: string;
   posts: Post[];
+  lang: string;
 }
 
-const { subjectTitle, posts } = Astro.props;
+const { subjectTitle, posts, lang } = Astro.props;
 const chapterCount = posts.length;
+const cardContent = {
+  "chapters": lang == "bn" ? "অধ্যায়" : "Chapters",
+  "read": lang == "bn" ? "সূচিপত্রে প্রবেশ করুন" : "View Table of Contents",
+  "index":  lang == "bn" ? "সূচিপত্র" : "Index Entries",
+};
 ---
 
 <div class="book-wrapper mx-8 mb-16 w-[320px] h-[430px] relative inline-block">
@@ -38,11 +44,11 @@ const chapterCount = posts.length;
         </h2>
 
         <span class="px-4 py-1.5 bg-accent-secondary text-neutral-light rounded-md text-xs font-semibold uppercase tracking-widest border border-accent-secondary">
-          {chapterCount} Volumes
+          {chapterCount} {cardContent.chapters}
         </span>
 
         <p class="text-accent-primary text-xs font-bold uppercase tracking-widest pt-4">
-          Open Archive
+          {cardContent.read}
         </p>
       </div>
     </div>
@@ -54,7 +60,7 @@ const chapterCount = posts.length;
       <div class="w-full h-full flex flex-col">
         <div class="p-5 border-b border-support-muted/10">
           <h3 class="font-heading font-bold text-sm text-accent-primary uppercase">
-            Index Entries
+            {cardContent.index}
           </h3>
         </div>
 
@@ -62,7 +68,7 @@ const chapterCount = posts.length;
           <ul class="space-y-4">
             {posts.map((post: Post) => (
               <li class="border-b border-support-muted/20 pb-3 last:border-0">
-                <a href={`/blog/en/${post.slug}`} class="block transition-all hover:translate-x-1">
+                <a href={`/blog/${lang}/${post.slug}`} class="block transition-all hover:translate-x-1">
                   <div class="flex items-baseline gap-3">
                     <span class="text-[10px] font-mono text-accent-primary">
                       #{post.data.chapter.toString().padStart(2, '0')}

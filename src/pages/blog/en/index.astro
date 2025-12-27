@@ -65,10 +65,9 @@ const subjectsWithPosts = groupPostsBySubject(allEnglishPosts);
           <p class="text-accent-secondary mt-2">Check back soon for new updates.</p>
        </div>
     ) : (
-      /* FIX: Use a responsive grid instead of space-y-16 */
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-y-20 gap-x-8 justify-items-center">
         {subjectsWithPosts.map(([subjectTitle, posts]) => (
-          <BookCard subjectTitle={subjectTitle} posts={posts} />
+          <BookCard subjectTitle={subjectTitle} posts={posts} lang={CURRENT_LANG} />
         ))}
       </div>
     )}
